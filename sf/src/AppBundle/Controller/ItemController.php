@@ -5,8 +5,10 @@ namespace AppBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 //use Symfony\Component\BrowserKit\Response; // add comment by Andrii 03.01.17
+use Symfony\Bundle\FrameworkBundle\Tests\Fixtures\Validation\Article;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response; // add by Andrii 03.01.17
+use AppBundle\Entity\Item;
 
 class ItemController extends Controller
 {
@@ -27,8 +29,9 @@ class ItemController extends Controller
      *
      * @Route("/item/{id}{sl}" , name="item_page" , requirements={"id":"[1-9][0-9]*", "sl":"/?"})
      *
-     * @param Request $request or simple $id
+     * @param $id
      * @return Response
+     * @internal param Request $request or simple $id
      */
     public function showAction($id) // or Request $request)
     {
@@ -46,7 +49,12 @@ class ItemController extends Controller
      */
     public function testAction()
     {
-        return $this->render('item/test.html.twig');
+        $item = new Item();
+        $item->setName('First item name')->setPrice('100')->setContent('Some <b>text</b> ');
+        dump($item); // include in Symfony
+
+
+        return $this->render('item/test.html.twig',['item'=>$item]);
 //        return new Response("<html><body>items list</body></html>");
     }
 
