@@ -25,7 +25,7 @@ class ItemController extends Controller
         $repo = $this->get('doctrine')->getRepository('AppBundle:Item');
         $items = $repo->findAll();
 
-        dump($items);
+//        dump($items);
 
         return compact('items');
 //        return [];
@@ -44,9 +44,18 @@ class ItemController extends Controller
     public function showAction($id) // or Request $request)
     {
 //        $id = $request->get('id');
-        
 
-        return compact('id');
+        $item = $this->get('doctrine')->getRepository('AppBundle:Item')->find($id);
+
+        if (!$item) {
+            throw $this->createNotFoundException("There is no such item");
+        }
+
+//        dump($item);
+
+//        return compact('id');
+
+        return ['item'=>$item];
 
 //        return $this->render('item/show.html.twig',['id_item_for_twig' => $id]);
 //        return new Response("<html><body>item page : {$id} </body></html>");
@@ -69,7 +78,7 @@ class ItemController extends Controller
         $em->persist($item); // подготовка к сохранению в базе
         $em->flush(); // сохранить все подготовленные объекты
 
-        dump($em); // include in Symfony
+//        dump($em); // include in Symfony
 
         return ['item'=>$item];
 

@@ -3,5 +3,9 @@
 {% block title %} Hello! {% endblock %}
 
 {% block body %}
-    <h1> Item {{ id }} </h1>
+    <h1> {{ item.name }} </h1>
+    <hr>
+    <h2> {{ item.price }} </h2>
+    <h2> {{ item.content|raw }} </h2>
+
 {% endblock %}
