@@ -1,7 +1,19 @@
 {% extends 'AppBundle::layout.html.twig' %}
 
+{% block title %} Hello! {% endblock %}
+
 {% block body %}
-    This is list of all items item/index.html
+
+    <h1>Items list</h1>
+This is list of all items item/index.html
+    <hr>
+    {% for item in items %}
+        <h3><a href="{{ path('item_page', {id : item.id}) }}"> {{ item.name }} </a></h3>
+        {{ item.id }}
+        {{ item.price }}
+        {{ item.content }}
+    {% endfor %}
+
 {% endblock %}
 
-{% block title %} Hello! {% endblock %}
+

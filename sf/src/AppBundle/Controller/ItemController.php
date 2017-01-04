@@ -22,7 +22,13 @@ class ItemController extends Controller
      */
     public function indexAction()
     {
-        return [];
+        $repo = $this->get('doctrine')->getRepository('AppBundle:Item');
+        $items = $repo->findAll();
+
+        dump($items);
+
+        return compact('items');
+//        return [];
 
 //        return $this->render('item/index.html.twig');
 //        return new Response("<html><body>items list</body></html>");
@@ -30,19 +36,17 @@ class ItemController extends Controller
 
     /**
      * one item page by id
+     * {sl} - for trailing slash if its needed
      *
-     * @Route("/item/{id}{sl}" , name="item_page" , requirements={"id":"[1-9][0-9]*", "sl":"/?"})
+     * @Route("/item/{id}{sl}" , name="item_page" , defaults={"sl":"","id":""} , requirements={"id":"[1-9][0-9]*", "sl":"/?"})
      * @Template()
-     *
-     * @param $id
-     * @return Response
-     * @internal param Request $request or simple $id
      */
     public function showAction($id) // or Request $request)
     {
 //        $id = $request->get('id');
+        
 
-        return ['id' => $id];
+        return compact('id');
 
 //        return $this->render('item/show.html.twig',['id_item_for_twig' => $id]);
 //        return new Response("<html><body>item page : {$id} </body></html>");
@@ -51,16 +55,23 @@ class ItemController extends Controller
     /**
      * items list page
      *
-     * @Route("/item-test{sl}" , name="item_test_action" , requirements={"sl":"/?"})
+     * @Route("/item-test" , name="item_test_action")
      * @Template()
      */
     public function testAction()
     {
         $item = new Item();
         $item->setName('First item name')->setPrice('100')->setContent('Some <b>text</b> ');
-        dump($item); // include in Symfony
 
-        return['item'=>$item];
+        //$doctrine=$this->get('doctrine');
+        $em=$this->get('doctrine')->getManager();
+
+        $em->persist($item); // подготовка к сохранению в базе
+        $em->flush(); // сохранить все подготовленные объекты
+
+        dump($em); // include in Symfony
+
+        return ['item'=>$item];
 
 
 //        return $this->render('item/test.html.twig',['item'=>$item]);

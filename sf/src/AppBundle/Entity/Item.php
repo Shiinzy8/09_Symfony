@@ -12,19 +12,39 @@ use Doctrine\ORM\Mapping as ORM;
 
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\ItemRepository")
  * @ORM\Table(name="item")
  */
 
 class Item {
-    
-    private $id;
-    private $name;
-    private $price;
-    private $content;
 
     /**
-     * @return mixed
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer")
+     */
+    private $id;
+
+    /**
+     * @ORM\Column(name="name", type="string", length=100)
+     */
+    private $name;
+
+    /**
+     * @ORM\Column(name="price", type="decimal")
+     */
+    private $price;
+
+    /**
+     * @ORM\Column(name="content", type="text")
+     */
+    private $content;
+
+
+    /**
+     * Get id
+     *
+     * @return integer
      */
     public function getId()
     {
@@ -32,7 +52,23 @@ class Item {
     }
 
     /**
-     * @return mixed
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return Item
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
      */
     public function getName()
     {
@@ -40,16 +76,23 @@ class Item {
     }
 
     /**
-     * @param mixed $name
+     * Set price
+     *
+     * @param string $price
+     *
+     * @return Item
      */
-    public function setName($name)
+    public function setPrice($price)
     {
-        $this->name = $name;
+        $this->price = $price;
+
         return $this;
     }
 
     /**
-     * @return mixed
+     * Get price
+     *
+     * @return string
      */
     public function getPrice()
     {
@@ -57,28 +100,26 @@ class Item {
     }
 
     /**
-     * @param mixed $price
+     * Set content
+     *
+     * @param string $content
+     *
+     * @return Item
      */
-    public function setPrice($price)
+    public function setContent($content)
     {
-        $this->price = $price;
+        $this->content = $content;
+
         return $this;
     }
 
     /**
-     * @return mixed
+     * Get content
+     *
+     * @return string
      */
     public function getContent()
     {
         return $this->content;
     }
-
-    /**
-     * @param mixed $content
-     */
-    public function setContent($content)
-    {
-        $this->content = $content;
-    }
-
 }
