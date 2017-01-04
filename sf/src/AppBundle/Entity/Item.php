@@ -8,8 +8,16 @@
 
 namespace AppBundle\Entity;
 
-class Item {
+use Doctrine\ORM\Mapping as ORM;
 
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="item")
+ */
+
+class Item {
+    
     private $id;
     private $name;
     private $price;

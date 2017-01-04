@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 //use Symfony\Component\BrowserKit\Response; // add comment by Andrii 03.01.17
 use Symfony\Bundle\FrameworkBundle\Tests\Fixtures\Validation\Article;
@@ -16,11 +17,14 @@ class ItemController extends Controller
     /**
      * items list page
      *
-     * @Route("/item{sl}" , name="item_list" , requirements={"sl":"/?"})
+     * @Route("/item" , name="item_list")
+     * @Template()
      */
     public function indexAction()
     {
-        return $this->render('item/index.html.twig');
+        return [];
+
+//        return $this->render('item/index.html.twig');
 //        return new Response("<html><body>items list</body></html>");
     }
 
@@ -28,6 +32,7 @@ class ItemController extends Controller
      * one item page by id
      *
      * @Route("/item/{id}{sl}" , name="item_page" , requirements={"id":"[1-9][0-9]*", "sl":"/?"})
+     * @Template()
      *
      * @param $id
      * @return Response
@@ -37,8 +42,9 @@ class ItemController extends Controller
     {
 //        $id = $request->get('id');
 
+        return ['id' => $id];
 
-        return $this->render('item/show.html.twig',['id_item_for_twig' => $id]);
+//        return $this->render('item/show.html.twig',['id_item_for_twig' => $id]);
 //        return new Response("<html><body>item page : {$id} </body></html>");
     }
 
@@ -46,6 +52,7 @@ class ItemController extends Controller
      * items list page
      *
      * @Route("/item-test{sl}" , name="item_test_action" , requirements={"sl":"/?"})
+     * @Template()
      */
     public function testAction()
     {
@@ -53,8 +60,10 @@ class ItemController extends Controller
         $item->setName('First item name')->setPrice('100')->setContent('Some <b>text</b> ');
         dump($item); // include in Symfony
 
+        return['item'=>$item];
 
-        return $this->render('item/test.html.twig',['item'=>$item]);
+
+//        return $this->render('item/test.html.twig',['item'=>$item]);
 //        return new Response("<html><body>items list</body></html>");
     }
 

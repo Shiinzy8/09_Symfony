@@ -1,0 +1,11 @@
+{% extends 'AppBundle::layout.html.twig' %}
+
+{% block title %} Hello! {% endblock %}
+
+{% block body %}
+    <h1> Test action for items item/test.html.twig </h1>
+    <h2> {{ item.name }} </h2>
+    <h3> {{ item.content | raw }} </h3>
+    {{ dump(item) }}
+{% endblock %}
+
