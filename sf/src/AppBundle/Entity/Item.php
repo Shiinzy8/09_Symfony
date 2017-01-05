@@ -9,10 +9,11 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert; // for using validation for forms
 
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Entity\ItemRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\ItemRepository")
  * @ORM\Table(name="item")
  */
 
@@ -27,16 +28,19 @@ class Item {
 
     /**
      * @ORM\Column(name="name", type="string", length=100)
+     * @Assert\NotBlank(message="fill the name please")
      */
     private $name;
 
     /**
      * @ORM\Column(name="price", type="decimal")
+     * @Assert\NotBlank(message="please the price")
      */
     private $price;
 
     /**
      * @ORM\Column(name="content", type="text")
+     * @Assert\NotBlank(message="fill the content please")
      */
     private $content;
 

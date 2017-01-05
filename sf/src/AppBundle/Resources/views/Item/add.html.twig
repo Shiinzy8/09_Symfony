@@ -1,0 +1,16 @@
+{% extends 'AppBundle::layout.html.twig' %}
+
+{% block title %} Hello! {% endblock %}
+
+{% block body %}
+
+    <h1> Add action for items item/add.html.twig </h1>
+
+    {{ form_start(form) }}
+    {{ form_widget(form) }} {#print form#}
+    <button>Save</button>
+    {{ form_end(form) }}
+
+    {#{{ dump(item) }}#}
+
+{% endblock %}

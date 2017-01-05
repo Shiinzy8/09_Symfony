@@ -1,0 +1,25 @@
+{% extends 'AppBundle::layout.html.twig' %}
+
+{% block title %} Hello! {% endblock %}
+
+{% block body %}
+
+    <h1> Edit action for items item/edit.html.twig </h1>
+    <h2> {{ item.name }} </h2>
+    <h3> {{ item.content | raw }} </h3> {#raw для не экранирования спецсимволов#}
+
+    {#{{ form(form) }} #}{#form(form) get data from ItemType#}
+
+    {{ form_start(form) }}
+        <div>
+            {{ form_label(form.name) }}
+            {{ form_errors(form.name) }}
+            {{ form_widget(form.name) }}
+        </div>
+        {#{{ form_widget(form) }} #}{#print form#}
+        <button>Save</button>
+    {{ form_end(form) }}
+
+    {#{{ dump(item) }}#}
+
+{% endblock %}
