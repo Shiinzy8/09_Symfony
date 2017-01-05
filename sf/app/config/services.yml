@@ -9,4 +9,5 @@ services:
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
     text_export:
         class: AppBundle\Service\TextExporter
-        arguments: ["%export_dir%"]
+        arguments: ["@logger","%export_dir%"]
+#        arguments: ["%export_dir%"]

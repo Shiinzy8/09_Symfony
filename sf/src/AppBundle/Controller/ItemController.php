@@ -58,8 +58,9 @@ class ItemController extends Controller
             throw $this->createNotFoundException('Page not found!');
         }
 
+        dump($item);
         $exporter = $this->get('text_export');
-        dump($exporter->export());
+        $exporter->export($item);
 
 //        dump($item);
 
