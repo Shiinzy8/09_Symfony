@@ -25,6 +25,11 @@ class ItemController extends Controller
     public function indexAction()
     {
         $repo = $this->get('doctrine')->getRepository('AppBundle:Item');
+
+//        for test
+//        $repo->findMy(100);
+        dump($repo->findMy(100));
+
         $items = $repo->findAll();
 
 //        dump($items);

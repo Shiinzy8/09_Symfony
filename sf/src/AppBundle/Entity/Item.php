@@ -44,6 +44,10 @@ class Item {
      */
     private $content;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Category")
+     */
+    private $category;
 
     /**
      * Get id
@@ -125,5 +129,29 @@ class Item {
     public function getContent()
     {
         return $this->content;
+    }
+
+    /**
+     * Set category
+     *
+     * @param \AppBundle\Entity\Category $category
+     *
+     * @return Item
+     */
+    public function setCategory(\AppBundle\Entity\Category $category = null)
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * Get category
+     *
+     * @return \AppBundle\Entity\Category
+     */
+    public function getCategory()
+    {
+        return $this->category;
     }
 }
