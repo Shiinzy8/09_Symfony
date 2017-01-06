@@ -3,7 +3,9 @@
 security:
 
     # http://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
+    # от куда брать инфу для сверки
     providers:
+        # значит сохранен прямо здесь, то есть можно добавить инфу прям сюда
         in_memory:
             memory: ~
 
