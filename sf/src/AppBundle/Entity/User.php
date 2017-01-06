@@ -43,7 +43,6 @@ class User implements UserInterface
      */
     private $password;
 
-
     /**
      * Get id
      *
@@ -145,6 +144,7 @@ class User implements UserInterface
     public function getRoles()
     {
         // TODO: Implement getRoles() method.
+        return ['ROLE_ADMIN'];
     }
 
     /**
@@ -167,6 +167,7 @@ class User implements UserInterface
     public function getUsername()
     {
         // TODO: Implement getUsername() method.
+        return $this->login;
     }
 
     /**
