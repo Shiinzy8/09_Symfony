@@ -28,7 +28,7 @@ class ItemController extends Controller
 
 //        for test
 //        $repo->findMy(100);
-        dump($repo->findMy(100));
+//        dump($repo->findMy(100));
 
         $items = $repo->findAll();
 
@@ -58,7 +58,7 @@ class ItemController extends Controller
             throw $this->createNotFoundException('Page not found!');
         }
 
-        dump($item);
+//        dump($item);
         $exporter = $this->get('text_export');
         $exporter->export($item);
 
@@ -100,7 +100,7 @@ class ItemController extends Controller
             return $this->redirectToRoute('item_edit', ['id' => $id]);
         }
 
-        dump($item, $form->isSubmitted(), $form->isValid());
+//        dump($item, $form->isSubmitted(), $form->isValid());
 
         if (!$item) {
             throw $this->createNotFoundException('Page not found!');

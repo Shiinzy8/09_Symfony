@@ -9,6 +9,11 @@ security:
         in_memory:
             memory: ~
 
+    # эта настройка говорит что на данной сущности User применять bcrypt шифрование
+    encoders:
+        AppBundle\Entity\User:
+            algorithm: bcrypt
+
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
         dev:
