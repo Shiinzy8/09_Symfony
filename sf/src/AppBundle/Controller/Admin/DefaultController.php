@@ -14,10 +14,19 @@ use AppBundle\Entity\User;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/admin" , name="admin_homepage")
+     * @Route("/admin/index" , name="admin_homepage")
      * @Template()
      */
     public function indexAction()
+    {
+        return [];
+    }
+
+    /**
+     * @Route("/admin/test" , name="admin_test")
+     * @Template()
+     */
+    public function testAction()
     {
         return [];
     }

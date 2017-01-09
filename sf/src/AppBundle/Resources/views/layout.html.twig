@@ -40,6 +40,11 @@
 
                 <li {% if path(app.request.attributes.get('_route')) starts with 'item' %} class="active" {% endif %}><a href="{{ path('item_list') }}">Items</a></li>
 
+                {% if is_granted('ROLE_ADMIN') %}
+                    <li {% if path(app.request.attributes.get('_route')) starts with 'security' %} class="active" {% endif %}><a href="{{ path('security_logout') }}">Logout ({{ app.user.login }})</a></li>
+                {% else %}
+                    <li {% if path(app.request.attributes.get('_route')) starts with 'security' %} class="active" {% endif %}><a href="{{ path('security_login') }}">Login</a></li>
+                {% endif %}
                 {#<li><a href="#contact">Contact</a></li>#}
 
             </ul>

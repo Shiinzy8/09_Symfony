@@ -44,6 +44,13 @@ class User implements UserInterface
     private $password;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="roles", type="json_array")
+     */
+    private $roles;
+
+    /**
      * Get id
      *
      * @return integer
@@ -126,6 +133,20 @@ class User implements UserInterface
     }
 
     /**
+     * Set roles
+     *
+     * @param $roles
+     * @return User
+     * @internal param $rolse
+     *
+     */
+    public function setRoles($roles)
+    {
+        $this->roles=$roles;
+        return $this;
+    }
+
+    /**
      * Returns the roles granted to the user.
      *
      * <code>
@@ -143,8 +164,8 @@ class User implements UserInterface
      */
     public function getRoles()
     {
-        // TODO: Implement getRoles() method.
-        return ['ROLE_ADMIN'];
+        // All roles must start with ROLE_
+        return $this->roles;
     }
 
     /**

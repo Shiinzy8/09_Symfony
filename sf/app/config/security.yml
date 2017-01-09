@@ -8,13 +8,23 @@ security:
         # значит сохранен прямо здесь, то есть можно добавить инфу прям сюда
         in_memory:
             memory: ~
+        # нудно указать сущность б называем как хотим
+        # property это свойство которое отличает одного юзера от другого
+        my_provider:
+            entity:
+                class: AppBundle:User
+                property: login
 
     # эта настройка говорит что на данной сущности User применять bcrypt шифрование
     encoders:
         AppBundle\Entity\User:
             algorithm: bcrypt
 
-    #
+    access_control:
+        - { path: ^/admin/index, roles: ROLE_ADMIN} # шаблоны путей закрытые для ролей
+        - { path: ^/admin/test, roles: ROLE_SOMETHING}
+
+    # нужен для решения вопросов во время логиорвания
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
         dev:
@@ -24,6 +34,14 @@ security:
 
         main:
             anonymous: ~ # авторизация в качестве анонима
+            # use one provider from providers
+            provider: my_provider
+            form_login:
+                login_path: /login # путь к форме для логина
+                check_path: /login # путь для проверки формы логина
+            logout:
+                path: /logout
+                target: /login
             # activate different ways to authenticate
 
             # http_basic: ~
