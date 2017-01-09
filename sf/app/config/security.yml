@@ -20,9 +20,11 @@ security:
         AppBundle\Entity\User:
             algorithm: bcrypt
 
+    # проверка идет сверху вниз
     access_control:
         - { path: ^/admin/index, roles: ROLE_ADMIN} # шаблоны путей закрытые для ролей
         - { path: ^/admin/test, roles: ROLE_SOMETHING}
+        - { path: ^/admin, roles: ROLE_ADMIN}
 
     # нужен для решения вопросов во время логиорвания
     firewalls:
