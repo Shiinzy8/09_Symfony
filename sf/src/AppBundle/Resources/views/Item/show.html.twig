@@ -1,11 +1,12 @@
 {% extends 'AppBundle::layout.html.twig' %}
 
-{% block title %} Hello! {% endblock %}
+{% block title %} Item! {% endblock %}
 
 {% block body %}
+    <h1>Item page Item/show.html.twig</h1>
+    <hr>
     <h1> {{ item.name }} </h1>
     <hr>
     <h2> {{ item.price }} </h2>
     <h2> {{ item.content|raw }} </h2>
-
 {% endblock %}

@@ -14,7 +14,7 @@ use AppBundle\Entity\User;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/admin/index" , name="admin_homepage")
+     * @Route("/admin/" , name="admin_homepage")
      * @Template()
      */
     public function indexAction()

@@ -19,12 +19,12 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        // whatever *your* User object is
-        $user = new User();
-        $plainPassword = 'ryanpass';
-        $encoder = $this->container->get('security.password_encoder');
-        $encoded = $encoder->encodePassword($user, $plainPassword);
-        dump($encoded);
+//        whatever *your* User object is
+//        $user = new User();
+//        $plainPassword = 'ryanpass';
+//        $encoder = $this->container->get('security.password_encoder');
+//        $encoded = $encoder->encodePassword($user, $plainPassword);
+//        dump($encoded);
 
         return [];
 //        return new Response('<html><body>hello</body></html>');
@@ -40,5 +40,4 @@ class DefaultController extends Controller
         ]);
     }
     */
-
 }

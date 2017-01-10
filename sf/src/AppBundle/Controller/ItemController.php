@@ -35,8 +35,8 @@ class ItemController extends Controller
 //        dump($items);
 
         return compact('items');
-//        return [];
 
+//        return [];
 //        return $this->render('item/index.html.twig');
 //        return new Response("<html><body>items list</body></html>");
     }
@@ -143,7 +143,7 @@ class ItemController extends Controller
     /**
      * items list page
      *
-     * @Route("/item-test" , name="item_test_action")
+     * @Route("/item/test" , name="test")
      * @Template()
      */
     public function testAction()

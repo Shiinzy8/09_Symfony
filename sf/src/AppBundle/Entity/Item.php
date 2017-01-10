@@ -1,22 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: ADAM
- * Date: 03.01.2017
- * Time: 18:29
- */
-
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert; // for using validation for forms
 
-
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ItemRepository")
  * @ORM\Table(name="item")
  */
-
 class Item {
 
     /**

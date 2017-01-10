@@ -1,16 +1,13 @@
 {% extends 'AppBundle::layout.html.twig' %}
 
-{% block title %} Hello! {% endblock %}
+{% block title %} Item! {% endblock %}
 
 {% block body %}
 
-    <h1>Items list</h1>
-    <a href="{{ path('item_add') }}" class="btn btn-info">Add item</a>
-This is list of all items item/index.html
+    <h1> Item list Item/index.html.twig </h1>
     <hr>
     {% for item in items %}
         <h3><a href="{{ path('item_page', {id : item.id}) }}"> {{ item.name }} </a></h3>
-        <a href="{{ path('item_edit', {id : item.id}) }}" class="btn btn-info">Edit item</a>
         {{ item.id }}
         {{ item.price }}
         {{ item.content }}

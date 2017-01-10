@@ -1,11 +1,15 @@
 {% extends 'AppBundle::layout.html.twig' %}
 
-{% block title %} Hello! {% endblock %}
+{% block title %} Admin/Item! {% endblock %}
 
 {% block body %}
+
+    <h1>Show one item Admin/Item/show.html.twig</h1>
+    <hr>
     <h1> {{ item.name }} </h1>
     <hr>
     <h2> {{ item.price }} </h2>
     <h2> {{ item.content|raw }} </h2>
+    <a href="{{ path('admin_item_edit', {id : item.id}) }}" class="btn btn-info">Edit item</a>
 
 {% endblock %}

@@ -1,10 +1,11 @@
 {% extends 'AppBundle::layout.html.twig' %}
 
-{% block title %} Hello! {% endblock %}
+{% block title %} Item! {% endblock %}
 
 {% block body %}
 
-    <h1> Edit action for items item/edit.html.twig </h1>
+    <h1> Edit action for items Item/edit.html.twig </h1>
+    <hr>
     <h2> {{ item.name }} </h2>
     <h3> {{ item.content | raw }} </h3> {#raw для не экранирования спецсимволов#}
 
