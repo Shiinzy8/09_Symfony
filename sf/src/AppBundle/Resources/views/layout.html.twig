@@ -29,7 +29,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_MANAGER') %}
+            {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_MANAGER') or is_granted('ROLE_USER') %}
                 <a class="navbar-brand" href="{{ path('admin_test') }}">Project name</a>
             {% else %}
                 <a class="navbar-brand" href="{{ path('test') }}">Project name</a>
