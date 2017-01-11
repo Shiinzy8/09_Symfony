@@ -9,4 +9,7 @@
     <hr>
     <h2> {{ item.price }} </h2>
     <h2> {{ item.content|raw }} </h2>
+    {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_MANAGER') %}
+        <a href="{{ path('item_edit', {id : item.id}) }}" class="btn btn-info">Edit item</a>
+    {% endif %}
 {% endblock %}
