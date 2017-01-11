@@ -1,7 +1,5 @@
 <?php
-
 namespace AppBundle\Controller;
-
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -12,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response; // add by Andrii 03.01.17
 use AppBundle\Entity\Item;
 use AppBundle\Form\ItemType;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class ItemController extends Controller
 {
@@ -58,9 +57,9 @@ class ItemController extends Controller
             throw $this->createNotFoundException('Page not found!');
         }
 
-//        dump($item);
-        $exporter = $this->get('text_export');
-        $exporter->export($item);
+        dump($item);
+//        $exporter = $this->get('text_export');
+//        $exporter->export($item);
 
 //        dump($item);
 
@@ -165,4 +164,85 @@ class ItemController extends Controller
 //        return new Response("<html><body>items list</body></html>");
     }
 
+    /**
+     * cart list page
+     *
+     * @Route("/item/cart", name="item_cart")
+     * @Template()
+     */
+    public function cartAction(Request $request)
+    {
+        $request_params= $request->request->all(); // получили все параметры из запроса
+        $session = $this->get('session'); // вызвали сессию
+
+        // проверили пустой ли массив с параметрами
+        if (!empty($request_params) && $request->get('amount')>0) {
+
+            $form = $request;
+
+            $id = $request->get('item_id'); // записали
+            $amount = $request->get('amount') + 0; // записали
+
+            // проверяем существует ли такой ключ в сессии
+            if($session->has($id)) {
+                $session_amount = $session->get($id); // достаем значение
+                $amount = $amount + $session_amount;
+            }
+
+            $session->set($id,$amount);
+            //dump($session);
+            //dump($form);
+            //return $this->redirectToRoute('item_list');
+        }
+
+        $session_params = $session->all(); // возвращаем все парамерты из сессии
+//        dump($session_params);
+
+        if(empty($session_params)) {
+            $this->addFlash('clear','no purchases');
+            return [];
+        } else {
+            $items = [];
+            foreach ($session_params as $key=>$value) {
+                $key = 0 + $key;
+                if (!$key) continue;
+                $item = $this->get('doctrine')->getRepository('AppBundle:Item')->find($key);
+                if (!$item) {
+                    throw $this->createNotFoundException('Page not found!');
+                }
+                $items[$key] = [$item,$value];
+            }
+            return ['items'=>$items];
+        }
+    }
+
+    /**
+     * cart changed list page
+     *
+     * @Route("/item/change", name="item_change")
+     */
+    public function changeAction(Request $request)
+    {
+        $request_params = $request->request->all(); // получили все параметры из запроса
+        $session = $this->get('session'); // вызвали сессию
+
+        // проверили пустой ли массив с параметрами
+        if (!empty($request_params)) {
+
+            $form = $request;
+
+            $id = $request->get('item_id'); // записали
+            $amount = $request->get('amount') + 0; // записали
+
+            // проверяем количество
+            if ($amount <= 0) {
+                $session->remove($id); // удаляем значение
+            } else {
+                $session->set($id, $amount);
+            }
+            return $this->redirect($this->generateUrl('item_cart'));
+        } else {
+            return $this->redirect($this->generateUrl('item_cart'));
+        }
+    }
 }

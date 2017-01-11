@@ -1,0 +1,41 @@
+{% extends 'AppBundle::layout.html.twig' %}
+
+{% block title %} Hello! {% endblock %}
+
+{% block body %}
+
+    <h1> Cart action for items Item/cart.html.twig </h1>
+    <a href="{{ path('item_list') }}" class="btn btn-info">Continue shopping</a>
+    <hr>
+
+    {% for flashes in app.session.flashbag.all %}
+        {% for flash in flashes %}
+            <div class="alert alert-success">
+                {{ flash}}
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    {% if items is defined %}
+        {% for item in items %}
+            <p>
+            <h5>{{ item.0.id }}</h5>
+            <h2>{{ item.0.name }}</h2>
+            <h4> Price of 1 item = <b>{{ item.0.price }}</b></h4>
+
+            <form action="{{ path('item_change') }}" method="post">
+                <input type="hidden" name="item_id" value="{{ item.0.id }}">
+                <label for="amount"> You ordered = </label>
+                <input type="number" name="amount" placeholder="0" value="{{ item.1 }}">
+                <button type="submit" name="change" class="btn btn-danger">Change</button>
+            </form>
+
+            <br>
+            {{ item.0.content }}
+            </p>
+            <hr>
+        {% endfor %}
+        <a href="{{ path('item_cart')}}" class="btn btn-success">Chekout</a>
+    {% endif %}
+
+{% endblock %}

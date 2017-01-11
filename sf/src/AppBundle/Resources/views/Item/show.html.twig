@@ -12,4 +12,10 @@
     {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_MANAGER') %}
         <a href="{{ path('item_edit', {id : item.id}) }}" class="btn btn-info">Edit item</a>
     {% endif %}
+    <form action="{{ path('item_cart') }}" method="post">
+        <input type="hidden" name="item_id" value="{{ item.id }}">
+        <label for="amount">Amount</label>
+        <input type="number" name="amount" placeholder="0">
+        <button type="submit" name="buy" class="btn btn-app">Buy</button>
+    </form>
 {% endblock %}
