@@ -196,7 +196,7 @@ class ItemController extends Controller
         }
 
         $session_params = $session->all(); // возвращаем все парамерты из сессии
-//        dump($session_params);
+        dump($session_params);
 
         if(empty($session_params)) {
             $this->addFlash('clear','no purchases');
