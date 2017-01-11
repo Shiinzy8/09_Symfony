@@ -4,16 +4,8 @@
 
 {% block body %}
 
-    <h1> Cart action for items Item/cart.html.twig </h1>
+    {#<h1> Cart action for items Item/cart.html.twig </h1>#}
     <hr>
-
-    {% for flashes in app.session.flashbag.all %}
-        {% for flash in flashes %}
-            <div class="alert alert-success">
-                {{ flash}}
-            </div>
-        {% endfor %}
-    {% endfor %}
 
     {% if items is defined %}
         {% for item in items %}
@@ -31,8 +23,8 @@
             </p>
             <hr>
         {% endfor %}
-        {#<a href="{{ path('sale')}}" class="btn btn-success">Chekout</a>#}
-        {#<a href="{{ path('item_list') }}" class="btn btn-info">Continue shopping</a>#}
+        <a href="{{ path('sale')}}" class="btn btn-success">Chekout</a>
+        <a href="{{ path('item_list') }}" class="btn btn-info">Continue shopping</a>
     {% endif %}
 
 {% endblock %}

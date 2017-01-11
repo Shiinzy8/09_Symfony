@@ -4,7 +4,7 @@
 
 {% block body %}
 
-    <h1> Item list Item/index.html.twig </h1>
+    {#<h1> Item list Item/index.html.twig </h1>#}
     <hr>
     {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_MANAGER') %}
         <a href="{{ path('item_add') }}" class="btn btn-success">Add item</a>

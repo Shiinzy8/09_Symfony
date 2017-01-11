@@ -196,24 +196,30 @@ class ItemController extends Controller
         }
 
         $session_params = $session->all(); // возвращаем все парамерты из сессии
-        dump($session_params);
+//        dump($session_params);
 
-        if(empty($session_params)) {
-            $this->addFlash('clear','no purchases');
-            return [];
-        } else {
-            $items = [];
-            foreach ($session_params as $key=>$value) {
-                $key = 0 + $key;
-                if (!$key) continue;
-                $item = $this->get('doctrine')->getRepository('AppBundle:Item')->find($key);
-                if (!$item) {
-                    throw $this->createNotFoundException('Page not found!');
-                }
-                $items[$key] = [$item,$value];
+        $items = [];
+        $count = 0;
+        foreach ($session_params as $key => $value) {
+            $key = 0 + $key;
+            if (!$key) {
+                continue;
             }
-            return ['items'=>$items];
+            $count++;
+            $item = $this->get('doctrine')->getRepository('AppBundle:Item')->find($key);
+            if (!$item) {
+                throw $this->createNotFoundException('Page not found!');
+            }
+            $items[$key] = [$item, $value];
         }
+        if ($count == 0) {
+            $this->addFlash('success', 'no purchases');
+
+            return [];
+        }
+
+        return ['items' => $items];
+
     }
 
     /**

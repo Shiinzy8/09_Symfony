@@ -50,7 +50,7 @@ class Sale
     /**
      * @ORM\Column(type="text")
      */
-    private $massege;
+    private $message;
 
     /**
      * Get id
@@ -165,9 +165,9 @@ class Sale
      *
      * @return Sale
      */
-    public function setMassege($massege)
+    public function setMessage($message)
     {
-        $this->massege = $massege;
+        $this->message = $message;
 
         return $this;
     }
@@ -177,9 +177,9 @@ class Sale
      *
      * @return string
      */
-    public function getMassege()
+    public function getMessage()
     {
-        return $this->massege;
+        return $this->message;
     }
 
     /**

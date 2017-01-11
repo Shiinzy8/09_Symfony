@@ -3,6 +3,10 @@
 {% block title %} Default! {% endblock %}
 
 {% block body %}
-    <h1>Hello, this is Default/index.html.twig</h1>
+    {#<h1>Hello, this is Default/index.html.twig</h1>#}
     <hr>
+    <li><a href="{{ path('item_category', {id:1}) }}" class="active">Caregory #1</a></li>
+    <li><a href="{{ path('category', {id:2}) }}" class="active">Caregory #2</a></li>
+    <li><a href="{{ path('category_show', {id:5}) }}" class="active">Caregory #3</a></li>
+    <li><a href="{{ path('category_show', {id:6}) }}" class="active">Caregory #4</a></li>
 {% endblock %}

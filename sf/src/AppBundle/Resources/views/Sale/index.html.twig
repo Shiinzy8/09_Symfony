@@ -3,6 +3,15 @@
 {% block title %} Default! {% endblock %}
 
 {% block body %}
-    <h1>Hello, this is Sale/index.html.twig</h1>
+    {#<h1>Hello, this is Sale/index.html.twig</h1>#}
     <hr>
+
+    {% if form is defined %}
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <br>
+        <input type="submit" value="Send"
+               class="btn btn-success" />
+        {{ form_end(form) }}
+    {% endif %}
 {% endblock %}
