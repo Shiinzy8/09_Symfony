@@ -5,11 +5,11 @@ namespace AppBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-//use Symfony\Component\BrowserKit\Response; // add comment by Andrii 03.01.17
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response; // add by Andrii 03.01.17
-
-use AppBundle\Entity\User;
+//use Symfony\Component\BrowserKit\Response; // add by Andrii 03.01.17
+//use Symfony\Component\HttpFoundation\Request;
+//use Symfony\Component\HttpFoundation\Response; // add by Andrii 03.01.17
+use AppBundle\Entity\Category;
+//use AppBundle\Entity\User;
 
 class DefaultController extends Controller
 {
@@ -19,18 +19,24 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-//        whatever *your* User object is
-//        $user = new User();
-//        $plainPassword = 'ryanpass';
-//        $encoder = $this->container->get('security.password_encoder');
-//        $encoded = $encoder->encodePassword($user, $plainPassword);
-//        dump($encoded);
+        $repo = $this->get('doctrine')->getRepository('AppBundle:Category');
+        $items = $repo->findAll();
 
+//        dump($items);
+
+        return ['items'=>$items];
+        /*
+        whatever *your* User object is
+        $user = new User();
+        $plainPassword = 'ryanpass';
+        $encoder = $this->container->get('security.password_encoder');
+        $encoded = $encoder->encodePassword($user, $plainPassword);
+        dump($encoded);
         return [];
-//        return new Response('<html><body>hello</body></html>');
-//        return $this->render('default/index.html.twig');
+        return new Response('<html><body>hello</body></html>');
+        return $this->render('default/index.html.twig');
+        */
     }
-
     /*
     public function indexAction(Request $request)
     {

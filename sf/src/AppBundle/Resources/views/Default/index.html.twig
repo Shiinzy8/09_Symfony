@@ -5,8 +5,9 @@
 {% block body %}
     {#<h1>Hello, this is Default/index.html.twig</h1>#}
     <hr>
-    <li><a href="{{ path('item_category', {id:1}) }}" class="active">Caregory #1</a></li>
-    <li><a href="{{ path('category', {id:2}) }}" class="active">Caregory #2</a></li>
-    <li><a href="{{ path('category_show', {id:5}) }}" class="active">Caregory #3</a></li>
-    <li><a href="{{ path('category_show', {id:6}) }}" class="active">Caregory #4</a></li>
+    <ul>
+        {% for item in items %}
+            <li><a href="{{ path('category_show', {name: item.name }) }}" class="active">{{ item.name }}</a></li>
+        {% endfor %}
+    </ul>
 {% endblock %}

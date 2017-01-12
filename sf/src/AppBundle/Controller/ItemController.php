@@ -5,9 +5,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 //use Symfony\Component\BrowserKit\Response; // add comment by Andrii 03.01.17
-use Symfony\Bundle\FrameworkBundle\Tests\Fixtures\Validation\Article;
+//use Symfony\Bundle\FrameworkBundle\Tests\Fixtures\Validation\Article;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response; // add by Andrii 03.01.17
+//use Symfony\Component\HttpFoundation\Response; // add by Andrii 03.01.17
 use AppBundle\Entity\Item;
 use AppBundle\Form\ItemType;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -57,10 +57,8 @@ class ItemController extends Controller
             throw $this->createNotFoundException('Page not found!');
         }
 
-        dump($item);
 //        $exporter = $this->get('text_export');
 //        $exporter->export($item);
-
 //        dump($item);
 
 //        return compact('id');
@@ -214,12 +212,10 @@ class ItemController extends Controller
         }
         if ($count == 0) {
             $this->addFlash('success', 'no purchases');
-
             return [];
         }
 
         return ['items' => $items];
-
     }
 
     /**
