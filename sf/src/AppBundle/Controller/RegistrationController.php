@@ -2,24 +2,23 @@
 // src/AppBundle/Controller/RegistrationController.php
 namespace AppBundle\Controller;
 
-use AppBundle\Form\UserType;
-use AppBundle\Entity\User;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+//use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use AppBundle\Form\UserType;
+use AppBundle\Entity\User;
 
 class RegistrationController extends Controller
 {
     /**
-     * @Route("/register", name="user_registration")
+     * @Template()
      */
     public function registerAction(Request $request)
     {
         // 1) build the form
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
-
-        dump($request);
 
         // 2) handle the submit (will only happen on POST)
         $form->handleRequest($request);
@@ -41,9 +40,6 @@ class RegistrationController extends Controller
             return $this->redirectToRoute('security_login');
         }
 
-        return $this->render(
-            '@App/Registration/register.html.twig',
-            array('form' => $form->createView())
-        );
+        return ['form' => $form->createView()];
     }
 }

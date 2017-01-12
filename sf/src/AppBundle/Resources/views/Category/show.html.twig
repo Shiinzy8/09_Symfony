@@ -3,17 +3,26 @@
 {% block title %} Category show! {% endblock %}
 
 {% block body %}
+
     {#<h1>Item page Item/show.html.twig</h1>#}
     <hr>
+
     {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_MANAGER') %}
         <a href="{{ path('item_add') }}" class="btn btn-success">Add item</a>
     {% endif %}
+
     <hr>
+
     {% for item in items %}
+
         <h3><a href="{{ path('item_page', {id : item.id}) }}"> {{ item.name }} </a></h3>
+
         {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_MANAGER') %}
+
             <a href="{{ path('item_edit', {id : item.id}) }}" class="btn btn-info">Edit item</a>
+
         {% endif %}
+
         <h4>{{ item.price }}</h4>
         {{ item.content }}
 
@@ -25,4 +34,5 @@
         </form>
 
     {% endfor %}
+
 {% endblock %}

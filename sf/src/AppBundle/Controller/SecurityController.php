@@ -6,15 +6,14 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 //use Symfony\Component\BrowserKit\Response; // add comment by Andrii 03.01.17
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response; // add by Andrii 03.01.17
+//use Symfony\Component\HttpFoundation\Request;
+//use Symfony\Component\HttpFoundation\Response; // add by Andrii 03.01.17
 
 use AppBundle\Entity\User;
 
 class SecurityController extends Controller
 {
     /**
-     * @Route("/login" , name="security_login")
      * @Template()
      */
     public function loginAction()
@@ -24,7 +23,9 @@ class SecurityController extends Controller
 
         // get the login error if there is one, вывести ошибку если она была
         $error = $authenticationUtils->getLastAuthenticationError();
+
 //        dump($error);
+
         // last username entered by the user, что б не пропал логин, даже если он неправильный
         $lastUsername = $authenticationUtils->getLastUsername();
 
@@ -34,9 +35,6 @@ class SecurityController extends Controller
         ];
     }
 
-    /**
-     * @Route("/logout" , name="security_logout")
-     */
     public function logoutAction()
     {
         // достаем сервис аутентификации
@@ -44,7 +42,9 @@ class SecurityController extends Controller
 
         // get the login error if there is one, вывести ошибку если она была
         $error = $authenticationUtils->getLastAuthenticationError();
+
 //        dump($error);
+
         // last username entered by the user, что б не пропал логин, даже если он неправильный
         $lastUsername = $authenticationUtils->getLastUsername();
 

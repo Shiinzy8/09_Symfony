@@ -3,11 +3,17 @@
 {% block title %} Default! {% endblock %}
 
 {% block body %}
+
     {#<h1>Hello, this is Default/index.html.twig</h1>#}
     <hr>
     <ul>
+
         {% for item in items %}
+
             <li><a href="{{ path('category_show', {name: item.name }) }}" class="active">{{ item.name }}</a></li>
+
         {% endfor %}
+
     </ul>
+
 {% endblock %}

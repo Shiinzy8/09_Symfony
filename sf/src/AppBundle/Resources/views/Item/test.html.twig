@@ -1,12 +1,14 @@
 {% extends 'AppBundle::layout.html.twig' %}
 
-{% block title %} Item! {% endblock %}
+{% block title %} Item test! {% endblock %}
 
 {% block body %}
+
     {#<h1> Test action for items Item/test.html.twig </h1>#}
     <hr>
     <h2> {{ item.name }} </h2>
     <h3> {{ item.content | raw }} </h3>
     {#{{ dump(item) }}#}
+
 {% endblock %}
 

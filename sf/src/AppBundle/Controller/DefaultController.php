@@ -2,29 +2,24 @@
 
 namespace AppBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+//use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 //use Symfony\Component\BrowserKit\Response; // add by Andrii 03.01.17
 //use Symfony\Component\HttpFoundation\Request;
 //use Symfony\Component\HttpFoundation\Response; // add by Andrii 03.01.17
 use AppBundle\Entity\Category;
-//use AppBundle\Entity\User;
 
 class DefaultController extends Controller
 {
     /**
-     * @Route("/" , name="homepage")
      * @Template()
      */
     public function indexAction()
     {
         $repo = $this->get('doctrine')->getRepository('AppBundle:Category');
         $items = $repo->findAll();
-
-//        dump($items);
-
-        return ['items'=>$items];
+        return ['items' => $items];
         /*
         whatever *your* User object is
         $user = new User();

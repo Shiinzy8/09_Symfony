@@ -1,13 +1,13 @@
 <?php
 namespace AppBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+//use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 //use Symfony\Component\BrowserKit\Response; // add comment by Andrii 03.01.17
 //use Symfony\Bundle\FrameworkBundle\Tests\Fixtures\Validation\Article;
-use Symfony\Component\HttpFoundation\Request;
 //use Symfony\Component\HttpFoundation\Response; // add by Andrii 03.01.17
+use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Item;
 use AppBundle\Form\ItemType;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -18,7 +18,6 @@ class ItemController extends Controller
     /**
      * items list page
      *
-     * @Route("/item" , name="item_list")
      * @Template()
      */
     public function indexAction()
@@ -44,7 +43,6 @@ class ItemController extends Controller
      * one item page by id
      * {sl} - for trailing slash if its needed
      *
-     * @Route("/item/{id}{sl}" , name="item_page" , defaults={"sl":"","id":""} , requirements={"id":"[1-9][0-9]*", "sl":"/?"})
      * @Template()
      */
     public function showAction($id) // or Request $request)
@@ -57,13 +55,7 @@ class ItemController extends Controller
             throw $this->createNotFoundException('Page not found!');
         }
 
-//        $exporter = $this->get('text_export');
-//        $exporter->export($item);
-//        dump($item);
-
-//        return compact('id');
-
-        return ['item'=>$item];
+        return compact('item');
 
 //        return $this->render('item/show.html.twig',['id_item_for_twig' => $id]);
 //        return new Response("<html><body>item page : {$id} </body></html>");
@@ -72,7 +64,6 @@ class ItemController extends Controller
     /**
      * edit one item
      *
-     * @Route("/item/edit/{id}" , name="item_edit" , defaults={"id":""} , requirements={"id":"[1-9][0-9]*"})
      * @Template()
      */
     public function editAction(Request $request)
@@ -81,13 +72,11 @@ class ItemController extends Controller
         $item = $this->get('doctrine')->getRepository('AppBundle:Item')->find($id);
 
         $form = $this->createForm(ItemType::class,$item); // connection with form
-//        dump($item);
 
         $form->handleRequest($request); // what we put in form
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            //$doctrine=$this->get('doctrine');
             $em=$this->get('doctrine')->getManager();
 
             $em->persist($item); // подготовка к сохранению в базе
@@ -96,8 +85,6 @@ class ItemController extends Controller
             $this->addFlash("success","Form saved successfully");
             return $this->redirectToRoute('item_edit', ['id' => $id]);
         }
-
-//        dump($item, $form->isSubmitted(), $form->isValid());
 
         if (!$item) {
             throw $this->createNotFoundException('Page not found!');
@@ -115,14 +102,12 @@ class ItemController extends Controller
     /**
      * add one new item
      *
-     * @Route("/item/add" , name="item_add")
      * @Template()
      */
     public function addAction(Request $request)
     {
         $item = new Item();
         $form = $this->createForm(ItemType::class,$item); // connection with form
-//        dump($item);
         $form->handleRequest($request); // what we put in form
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -131,6 +116,7 @@ class ItemController extends Controller
             $em->persist($item); // подготовка к сохранению в базе
             $em->flush(); // сохранить все подготовленные объекты
             $this->addFlash("success","Form saved successfully");
+
             return $this->redirectToRoute('item_list');
         }
 
@@ -140,7 +126,6 @@ class ItemController extends Controller
     /**
      * items list page
      *
-     * @Route("/item/test" , name="test")
      * @Template()
      */
     public function testAction()
@@ -165,7 +150,6 @@ class ItemController extends Controller
     /**
      * cart list page
      *
-     * @Route("/item/cart", name="item_cart")
      * @Template()
      */
     public function cartAction(Request $request)
@@ -176,7 +160,7 @@ class ItemController extends Controller
         // проверили пустой ли массив с параметрами
         if (!empty($request_params) && $request->get('amount')>0) {
 
-            $form = $request;
+//            $form = $request;
 
             $id = $request->get('item_id'); // записали
             $amount = $request->get('amount') + 0; // записали
@@ -188,13 +172,10 @@ class ItemController extends Controller
             }
 
             $session->set($id,$amount);
-            //dump($session);
-            //dump($form);
             //return $this->redirectToRoute('item_list');
         }
 
         $session_params = $session->all(); // возвращаем все парамерты из сессии
-//        dump($session_params);
 
         $items = [];
         $count = 0;
@@ -220,8 +201,6 @@ class ItemController extends Controller
 
     /**
      * cart changed list page
-     *
-     * @Route("/item/change", name="item_change")
      */
     public function changeAction(Request $request)
     {
@@ -242,9 +221,7 @@ class ItemController extends Controller
             } else {
                 $session->set($id, $amount);
             }
-            return $this->redirect($this->generateUrl('item_cart'));
-        } else {
-            return $this->redirect($this->generateUrl('item_cart'));
         }
+            return $this->redirectToRoute('item_cart');
     }
 }
