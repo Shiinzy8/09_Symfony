@@ -1,1 +1,1 @@
-# 09_Symfony
+# 09_Symfony playground: php-fpm 7.2, ngnix, postgres 9.6, rabbitmq 3.7.5
