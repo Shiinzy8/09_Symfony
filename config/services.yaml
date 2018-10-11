@@ -37,9 +37,9 @@ services:
 #            $message: '%hello_message%' # здесь мы зададим такой же параметр для конструктора но уже через parameters
 #            $message: 'Hello from service' # в конструкторе класса добавили message, а здесь задали его иначе бы не заработало
 
-#    app.greeting:
-#        public: true
-#        alias: App\Service\Greeting
+    app.greeting:
+        public: true
+        alias: App\Service\Greeting
 
 
 #    App\Controller\BlockController: ['@App\Service\Greeting']
