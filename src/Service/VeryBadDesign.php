@@ -24,6 +24,6 @@ class VeryBadDesign implements ContainerAwareInterface
         // $container->get(Greeting::class);
         // после того как мы в services.yaml создали alias для app.greeting и дали ему свойство public:true
         // мы можем заменить эту записть на такуюжу но с использованием alias
-        $container->get('app.greeting');
+//        $container->get('app.greeting');
     }
 }
