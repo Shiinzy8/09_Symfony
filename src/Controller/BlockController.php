@@ -9,12 +9,7 @@
 namespace App\Controller;
 
 
-use App\Service\Greeting;
-use App\Service\VeryBadDesign;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -24,9 +19,9 @@ use Symfony\Component\Routing\RouterInterface;
 /**
  * @Route("/blog")
  *
- * @property Session session
+ * @property SessionInterface session
  */
-//class BlockController extends Controller (лучше так не делать)
+// class BlockController extends Controller (лучше так не делать)
 // если наследоватся от этого класса то в методе index мы сможем достать сервис
 // потому что в Controller разрешен к нему доступ, а у AbstractController есть доступ к ограниченному набору сервисов
 // (надо смотреть его реелизацию getSubscribedServices())
@@ -68,20 +63,18 @@ class BlockController
      * @throws \Twig_Error_Syntax
      */
 
-    // мы можем прокинуть в этот метод Request благодаря actionTypeResolver
-    // в дальнейшем мы сможем писать свои, но все основывает на типа данных
-//    public function index(Request $request)
+// мы можем прокинуть в этот метод Request благодаря actionTypeResolver
+// в дальнейшем мы сможем писать свои, но все основывает на типа данных
+// public function index(Request $request)
 // что б не пробрасывать весь объект Request мы можем изменить роут и добавить в него параметр который прямиком попадет
 // в контроллер и вызывать его уже по другому
     public function index()
     {
-//        $this->get('app.greeting');
         $html =  $this->twig->render(
             'blog/index.html.twig',
             [
                 'posts' => $this->session->get('posts')
             ]
-//            $request->get('name')
         );
 
         return new Response($html);
@@ -105,6 +98,11 @@ class BlockController
 
     /**
      * @Route("/show/{id}", name="blog_show")
+     * @param $id
+     * @return Response
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
      */
     public function show($id)
     {
