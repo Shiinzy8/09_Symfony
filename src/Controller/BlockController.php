@@ -13,13 +13,18 @@ use App\Service\Greeting;
 use App\Service\VeryBadDesign;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
- * @property Greeting greeting
- * @property VeryBadDesign badDesign
+ * @Route("/blog")
+ *
+ * @property Session session
  */
 //class BlockController extends Controller (лучше так не делать)
 // если наследоватся от этого класса то в методе index мы сможем достать сервис
@@ -27,32 +32,36 @@ use Symfony\Component\Routing\Annotation\Route;
 // (надо смотреть его реелизацию getSubscribedServices())
 class BlockController
 {
-
-    /**
-     * @var Greeting
-     */
-    private $greeting;
-
     /**
      * @var \Twig_Environment
      */
     private $twig;
 
     /**
-     * BlockController constructor.
-     * @param Greeting $greeting
-     * @param \Twig_Environment $twig
+     * @var SessionInterface
      */
-    public function __construct(Greeting $greeting, \Twig_Environment $twig)
+    private $session;
+    /**
+     * @var RouterInterface
+     */
+    private $router;
+
+    /**
+     * BlockController constructor.
+     * @param \Twig_Environment $twig
+     * @param SessionInterface $session
+     * @param RouterInterface $router
+     */
+    public function __construct(\Twig_Environment $twig, SessionInterface $session, RouterInterface $router)
     {
-        $this->greeting = $greeting;
         $this->twig = $twig;
+        $this->session = $session;
+        $this->router = $router;
     }
 
     /**
-// Route("/", name="block_index") старый вариант без параметра
-     * @Route("/{name}", name="block_index")
-     * @param Request $request
+// Route("/", name="blog_index") старый вариант без параметра
+     * @Route("/", name="blog_index")
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Twig_Error_Loader
      * @throws \Twig_Error_Runtime
@@ -64,13 +73,53 @@ class BlockController
 //    public function index(Request $request)
 // что б не пробрасывать весь объект Request мы можем изменить роут и добавить в него параметр который прямиком попадет
 // в контроллер и вызывать его уже по другому
-    public function index($name)
+    public function index()
     {
 //        $this->get('app.greeting');
-        $html =  $this->twig->render('base.html.twig', ['message' => $this->greeting->greet(
+        $html =  $this->twig->render(
+            'blog/index.html.twig',
+            [
+                'posts' => $this->session->get('posts')
+            ]
 //            $request->get('name')
-            $name
-        )]);
+        );
+
+        return new Response($html);
+    }
+
+    /**
+     * @Route("/add", name="blog_add")
+     */
+    public function add()
+    {
+        $posts = $this->session->get('posts');
+        $posts[uniqid()] = [
+            'title' => 'A random title ' . rand(1, 100),
+            'text' => 'A random text nr ' . rand(1, 200),
+        ];
+
+        $this->session->set('posts', $posts);
+
+        return new RedirectResponse($this->router->generate('blog_index'));
+    }
+
+    /**
+     * @Route("/show/{id}", name="blog_show")
+     */
+    public function show($id)
+    {
+        $posts = $this->session->get('posts');
+        if (!$posts || !isset($posts[$id])) {
+            throw new NotFoundHttpException('Post not found');
+        }
+
+        $html = $this->twig->render(
+            'blog/post.html.twig',
+            [
+                'id' => $id,
+                'post' => $posts[$id],
+            ]
+        );
 
         return new Response($html);
     }
