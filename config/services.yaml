@@ -37,6 +37,10 @@ services:
 #            $message: '%hello_message%' # здесь мы зададим такой же параметр для конструктора но уже через parameters
 #            $message: 'Hello from service' # в конструкторе класса добавили message, а здесь задали его иначе бы не заработало
 
+    App\Twig\AppExtension:
+        arguments:
+            $locale: '%locale%'
+
     app.greeting:
         public: true
         alias: App\Service\Greeting
