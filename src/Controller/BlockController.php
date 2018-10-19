@@ -110,6 +110,14 @@ class BlockController
         $posts = $this->session->get('posts');
         if (!$posts || !isset($posts[$id])) {
             throw new NotFoundHttpException('Post not found');
+
+            // чтоб переопределить шаблон для ошибки
+            // симфони хранит шаблоны ошибок в vendor/symfony/twig-bundle/Resources/views/Exception
+            // для того что б создать свой шаблон для вывода ошибка
+            // действует такой алгоритм
+                // сначала по коду ошибки симфони ищет шаблон: пример код 404, надо шаблон error404.html.twig
+                // если его нет то будет смотреть в файл error.json.twig
+                // а потом просто обратится к файлу error.html.twig
         }
 
         $html = $this->twig->render(
