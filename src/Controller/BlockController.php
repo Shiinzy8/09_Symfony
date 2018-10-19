@@ -89,6 +89,7 @@ class BlockController
         $posts[uniqid()] = [
             'title' => 'A random title ' . rand(1, 100),
             'text' => 'A random text nr ' . rand(1, 200),
+            'date' => new \Datetime(),
         ];
 
         $this->session->set('posts', $posts);
