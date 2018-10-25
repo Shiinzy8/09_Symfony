@@ -73,27 +73,30 @@ class MicroPostController
 
     /**
      * @Route("/", name="micro_post_index")
+     *
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
      */
     public function index()
     {
-        try {
-            $html = $this->twig->render('micro-post/index.html.twig', [
-                'posts' => $this->microPostRepository->findAll()
-            ]);
-        } catch (\Twig_Error_Loader $e) {
-        } catch (\Twig_Error_Runtime $e) {
-        } catch (\Twig_Error_Syntax $e) {
-        }
+        $html = $this->twig->render('micro-post/index.html.twig', [
+            'posts' => $this->microPostRepository->findAll()
+        ]);
 
-        /** @var string $html */
         return new Response($html);
     }
 
-
     /**
      * @Route("/add", name="micro_post_add")
+     *
      * @param Request $request
+     *
      * @return Response
+     *
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
      */
     public function add(Request $request)
     {
@@ -123,15 +126,39 @@ class MicroPostController
         // очень важно вызывать form->createView после handleRequest
         // так же наша форма не будет использовать стили bootstrap
         // для того что б это исправить надо в twig.yaml добавить строку form_themes:['bootstrap_4_layout.html.twig']
-        try {
-            return new Response(
-                $this->twig->render('micro-post/add.html.twig', [
-                    'form' => $form->createView(),
-                ])
-            );
-        } catch (\Twig_Error_Loader $e) {
-        } catch (\Twig_Error_Runtime $e) {
-        } catch (\Twig_Error_Syntax $e) {
-        }
+
+        return new Response(
+            $this->twig->render('micro-post/add.html.twig', [
+                'form' => $form->createView(),
+            ])
+        );
+    }
+
+    /**
+     * @Route("/{id}", name="micro_post_post")
+     *
+     * @param MicroPost $post
+     * @return Response
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
+     */
+//    public function post($id)
+// второй способ задать параметр на вход для метода
+//
+    public function post(MicroPost $post)
+    {
+//        по скольку мы задали входным параметром $post то симфони будет искать ключевое поле в Entity
+//        и сразу искать запись post с таким id, если не найдет вернет 404
+//        проверить что симфони правильно делает запрос можно в дев тулзах пункт Doctrine
+//        $post = $this->microPostRepository->find($id);
+
+        return new Response(
+            $this->twig->render(
+                'micro-post/post.html.twig', [
+                    'post' => $post
+                ]
+            )
+        );
     }
 }
