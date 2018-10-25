@@ -15,7 +15,6 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 class AppFixtures extends Fixture
 {
-
     /**
      * Load data fixtures with the passed EntityManager
      *
