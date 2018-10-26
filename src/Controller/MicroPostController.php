@@ -41,7 +41,7 @@ class MicroPostController
      */
     private $formFactory;
     /**
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     private $entityManager;
     /**
@@ -81,10 +81,43 @@ class MicroPostController
     public function index()
     {
         $html = $this->twig->render('micro-post/index.html.twig', [
-            'posts' => $this->microPostRepository->findAll()
+//            'posts' => $this->microPostRepository->findAll()
+            'posts' => $this->microPostRepository->findBy([], ['time' => 'DESC']),
         ]);
 
         return new Response($html);
+    }
+
+
+    /**
+     * @Route("/edit/{id}", name="micro_post_edit")
+     *
+     * @param MicroPost $microPost
+     * @param Request $request
+     *
+     * @return RedirectResponse|Response
+     *
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
+     */
+    public function edit(MicroPost $microPost, Request $request)
+    {
+        $form = $this->formFactory->create( MicroPostType::class, $microPost);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+//            $this->entityManager->persist($microPost);
+            $this->entityManager->flush();
+
+            return new RedirectResponse($this->router->generate('micro_post_index'));
+        }
+
+        return new Response(
+            $this->twig->render('micro-post/add.html.twig', [
+                'form' => $form->createView(),
+            ])
+        );
     }
 
     /**
@@ -92,7 +125,7 @@ class MicroPostController
      *
      * @param Request $request
      *
-     * @return Response
+     * @return Response|RedirectResponse
      *
      * @throws \Twig_Error_Loader
      * @throws \Twig_Error_Runtime
@@ -138,15 +171,17 @@ class MicroPostController
      * @Route("/{id}", name="micro_post_post")
      *
      * @param MicroPost $post
+     *
      * @return Response
+     *
      * @throws \Twig_Error_Loader
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax
      */
+    public function post(MicroPost $post)
 //    public function post($id)
 // второй способ задать параметр на вход для метода
 //
-    public function post(MicroPost $post)
     {
 //        по скольку мы задали входным параметром $post то симфони будет искать ключевое поле в Entity
 //        и сразу искать запись post с таким id, если не найдет вернет 404

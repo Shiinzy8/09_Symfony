@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert; // для создания кастомных валидаций
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MicroPostRepository")
@@ -20,6 +21,8 @@ class MicroPost
 
     /**
      * @ORM\Column(type="string", length=280)
+     * @Assert\NotBlank() добавляем способы проверки вручную
+     * @Assert\Length(min=10, minMessage="to short text, message is set with annotation in Entity\MicroPost")
      */
     private $text;
 
