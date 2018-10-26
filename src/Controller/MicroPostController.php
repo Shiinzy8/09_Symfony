@@ -17,6 +17,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -48,6 +49,10 @@ class MicroPostController
      * @var RouterInterface
      */
     private $router;
+    /**
+     * @var FlashBagInterface
+     */
+    private $flashBag;
 
     /**
      * MicroPostController constructor.
@@ -56,19 +61,23 @@ class MicroPostController
      * @param FormFactoryInterface $formFactory
      * @param EntityManagerInterface $entityManager
      * @param RouterInterface $router
+     * @param FlashBagInterface $flashBag
      */
     public function __construct(
-        \Twig_Environment $twig,
-        MicroPostRepository $microPostRepository,
-        FormFactoryInterface $formFactory,
-        EntityManagerInterface $entityManager,
-        RouterInterface $router)
+        \Twig_Environment $twig, // для работы с шаблонизатором
+        MicroPostRepository $microPostRepository, // для работы с репозиторием постов
+        FormFactoryInterface $formFactory, // для работы с формами
+        EntityManagerInterface $entityManager, // для работы с базой
+        RouterInterface $router, // для работы с роутингом
+        FlashBagInterface $flashBag // нужен что б выводить сообщения после редиректов
+    )
     {
         $this->twig = $twig;
         $this->microPostRepository = $microPostRepository;
         $this->formFactory = $formFactory;
         $this->entityManager = $entityManager;
         $this->router = $router;
+        $this->flashBag = $flashBag;
     }
 
     /**
@@ -117,6 +126,29 @@ class MicroPostController
             $this->twig->render('micro-post/add.html.twig', [
                 'form' => $form->createView(),
             ])
+        );
+    }
+
+    /**
+     * @Route("/delete/{id}", name="micro_post_delete")
+     *
+     * @param MicroPost $microPost
+     *
+     * @return RedirectResponse
+     */
+    public function delete(MicroPost $microPost)
+    {
+        // формирует запрос на удаление записи но не выполняет его
+        $microPostId = $microPost->getId();
+        $this->entityManager->remove($microPost);
+        // а вот эта строка выполнит уже сформированный запрос
+        $this->entityManager->flush();
+
+        // хранит в сессис сообщения
+        $this->flashBag->add('notice', "You deleted {$microPostId} post");
+
+        return new RedirectResponse(
+            $this->router->generate('micro_post_index')
         );
     }
 

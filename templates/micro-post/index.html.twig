@@ -1,5 +1,13 @@
 {% extends 'base.html.twig' %}
 {% block body %}
+    {# проходим по всем сообщениям в сессии #}
+    {% for message in app.flashes('notice') %}
+        <div class="alert alert-success">
+            {# после вывода этого сообщения оно пропадет из сесси #}
+            {# но если его не вывести оно так и будет здесь хранится #}
+            {{ message }}
+        </div>
+    {% endfor %}
     <small class="d-block text-right mt-3">
         <a href={{ path('micro_post_add') }}>Add new post</a>
     </small>
@@ -10,6 +18,7 @@
         </a>
         <small class="d-block text-right mt-3">
             <a href={{ path('micro_post_edit', { 'id': post.id }) }}>Edit {{ post.id }} post</a>
+            <a href={{ path('micro_post_delete', { 'id': post.id }) }}>Delete {{ post.id }} post</a>
         </small>
     {% endfor %}
 {% endblock %}
