@@ -7,6 +7,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * эта строка надо потому что слово user зарезервировано в posgresql
+ * @ORM\Table(name="`user`")
  */
 class User implements UserInterface, \Serializable
 {
@@ -120,7 +122,6 @@ class User implements UserInterface, \Serializable
 
     }
 
-
     /**
      * String representation of object
      * @link https://php.net/manual/en/serializable.serialize.php
@@ -150,5 +151,37 @@ class User implements UserInterface, \Serializable
     public function unserialize($serialized)
     {
         list($this->id, $this->userName, $this->password) = unserialize($serialized);
+    }
+
+    /**
+     * @param mixed $userName
+     */
+    public function setUserName($userName): void
+    {
+        $this->userName = $userName;
+    }
+
+    /**
+     * @param mixed $password
+     */
+    public function setPassword($password): void
+    {
+        $this->password = $password;
+    }
+
+    /**
+     * @param mixed $email
+     */
+    public function setEmail($email): void
+    {
+        $this->email = $email;
+    }
+
+    /**
+     * @param mixed $fullName
+     */
+    public function setFullName($fullName): void
+    {
+        $this->fullName = $fullName;
     }
 }
