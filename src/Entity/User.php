@@ -3,12 +3,18 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * эта строка надо потому что слово user зарезервировано в posgresql
  * @ORM\Table(name="`user`")
+ *
+ * можно задать как массив так одно поле и сообщение если уникальность была нарушена
+ * @UniqueEntity(fields="email", message="This email is already used")
+ * @UniqueEntity(fields="userName", message="This username is already used")
  */
 class User implements UserInterface, \Serializable
 {
@@ -21,6 +27,10 @@ class User implements UserInterface, \Serializable
 
     /**
      * @ORM\Column(type="string", length=50, unique=true)
+     * комментарий нужный что б пользователь не оставлял имя пустым
+     * @Assert\NotBlank()
+     * ограничиваем длину имени пользователя
+     * @Assert\Length(min=5, max=50)
      *
      * @var
      */
@@ -34,7 +44,20 @@ class User implements UserInterface, \Serializable
     private $password;
 
     /**
+     * Не добавляя комментарий ORM поле не попадет в таблицу а будет просто параметром класса
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(min=8, max=4096)
+     *
+     * @var
+     */
+    private $plainPassword;
+
+    /**
      * @ORM\Column(type="string", length=254, unique=true)
+     *
+     * @Assert\NotBlank()
+     * @Assert\Email()
      *
      * @var
      */
@@ -42,6 +65,9 @@ class User implements UserInterface, \Serializable
 
     /**
      * @ORM\Column(type="string", length=50)
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(min=4, max=50)
      *
      * @var
      */
@@ -87,6 +113,14 @@ class User implements UserInterface, \Serializable
     public function getPassword()
     {
         return $this->password;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
     }
 
     /**
@@ -167,6 +201,14 @@ class User implements UserInterface, \Serializable
     public function setPassword($password): void
     {
         $this->password = $password;
+    }
+
+    /**
+     * @param mixed $plainPassword
+     */
+    public function setPlainPassword($plainPassword): void
+    {
+        $this->plainPassword = $plainPassword;
     }
 
     /**
