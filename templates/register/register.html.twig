@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {{ form_start(form) }}
+
+    {# это вызов рендеринга полей формы #}
+    {{ form_widget(form) }}
+
+    {# можно вызывать рендеринг отдельный полей #}
+    {#{{ form_widget(form.userName) }}#}
+
+    {{ form_end(form) }}
+{% endblock %}
