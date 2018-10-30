@@ -32,6 +32,16 @@ class MicroPost
     private $time;
 
     /**
+     * поле posts мы создадим в таблице user, в entity надо добавить соответствующий параметр
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="posts")
+     *
+     * для создания столбца который будет показывать id пользователя ссылаясь на таблицу пользвателей
+     * @ORM\JoinColumn()
+     * @var
+     */
+    private $user;
+
+    /**
      * @return mixed
      */
     public function getId()
@@ -71,4 +81,19 @@ class MicroPost
         $this->time = $time;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param mixed $user
+     */
+    public function setUser($user): void
+    {
+        $this->user = $user;
+    }
 }

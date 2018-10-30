@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -72,6 +73,22 @@ class User implements UserInterface, \Serializable
      * @var
      */
     private $fullName;
+
+    /**
+     * у одного юзера много постов
+     * @ORM\OneToMany(targetEntity="App\Entity\MicroPost", mappedBy="user")
+     * @var
+     */
+    private $posts;
+
+    /**
+     * Doctrine doesn't do construct method it's only for our use
+     * User constructor.
+     */
+    public function __construct()
+    {
+        $this->posts = new ArrayCollection();
+    }
 
     /**
      * @return int|null
@@ -159,6 +176,14 @@ class User implements UserInterface, \Serializable
     public function getUsername()
     {
         return $this->userName;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPosts()
+    {
+        return $this->posts;
     }
 
     /**
