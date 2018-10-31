@@ -36,7 +36,6 @@ class AppFixtures extends Fixture
         $this->passwordEncoder = $passwordEncoder;
     }
 
-
     /**
      * Load data fixtures with the passed EntityManager
      *
