@@ -44,8 +44,10 @@ class AppFixtures extends Fixture
      */
     public function load(ObjectManager $manager)
     {
-        $this->loadMicroPost($manager);
+        // сначала надо вызывать создание пользователя потому что посты используют
+        // ссылку на пользователя, если его не будет посты не создадутся
         $this->loadUser($manager);
+        $this->loadMicroPost($manager);
     }
 
     /**
@@ -57,6 +59,10 @@ class AppFixtures extends Fixture
             $microPost = new MicroPost();
             $microPost->setText('Some random text ' . rand(0, 100));
             $microPost->setTime(new \DateTime('2008-03-15'));
+
+            // по скольку мы добавили связь между постами и пользователем то в фикстурах ее тоже надо создавать
+            // здесь мы создали ссылку на пользователя которого указали когда создавали пользователя
+            $microPost->setUser($this->getReference('andrii'));
             $manager->persist($microPost);
         }
 
@@ -76,6 +82,9 @@ class AppFixtures extends Fixture
         $user->setFullName('John Doe');
         $user->setEmail('john_doe@gmail.com');
         $user->setPassword($this->passwordEncoder->encodePassword($user, 'john123'));
+
+        // создаем ссылку, созданный пользователь привязывается к ссылке andrii
+        $this->addReference('andrii', $user);
 
         $manager->persist($user);
         $manager->flush();
