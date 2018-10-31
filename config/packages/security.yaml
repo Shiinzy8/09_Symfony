@@ -1,4 +1,6 @@
 security:
+    access_decision_manager:
+        strategy: affirmative
     encoders:
         # use your user class name here
         App\Entity\User:

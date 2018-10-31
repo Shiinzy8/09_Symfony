@@ -13,6 +13,7 @@ use App\Entity\MicroPost;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
+use phpDocumentor\Reflection\Types\Self_;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
@@ -36,6 +37,39 @@ class AppFixtures extends Fixture
         $this->passwordEncoder = $passwordEncoder;
     }
 
+    private const USERS = [
+        [
+            'userName' => 'john_doe',
+            'email' => 'john_doe@doe.com',
+            'password' => 'john123',
+            'fullName' => 'John Doe',
+        ],
+        [
+            'userName' => 'rob_smith',
+            'email' => 'rob_smith@smith.com',
+            'password' => 'rob12345',
+            'fullName' => 'Rob Smith',
+        ],
+        [
+            'userName' => 'marry_gold',
+            'email' => 'marry_gold@gold.com',
+            'password' => 'marry12345',
+            'fullName' => 'Marry Gold',
+        ],
+    ];
+
+    private const POST_TEXT = [
+        'Hello, how are you?',
+        'It\'s nice sunny weather today',
+        'I need to buy some ice cream!',
+        'I wanna buy a new car',
+        'There\'s a problem with my phone',
+        'I need to go to the doctor',
+        'What are you up to today?',
+        'Did you watch the game yesterday?',
+        'How was your day?'
+    ];
+
     /**
      * Load data fixtures with the passed EntityManager
      *
@@ -54,14 +88,19 @@ class AppFixtures extends Fixture
      */
     private function loadMicroPost(ObjectManager $manager)
     {
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 30; $i++) {
             $microPost = new MicroPost();
-            $microPost->setText('Some random text ' . rand(0, 100));
-            $microPost->setTime(new \DateTime('2008-03-15'));
+            $microPost->setText(self::POST_TEXT[rand(0, count(self::POST_TEXT) - 1)]);
+
+            $dateTime = new \DateTime();
+            $dateTime->modify('-' . rand(0, 10) . ' day' );
+            $microPost->setTime($dateTime);
 
             // по скольку мы добавили связь между постами и пользователем то в фикстурах ее тоже надо создавать
             // здесь мы создали ссылку на пользователя которого указали когда создавали пользователя
-            $microPost->setUser($this->getReference('andrii'));
+            $microPost->setUser($this->getReference(
+                self::USERS[rand(0, count(self::USERS) - 1)]['userName'])
+            );
             $manager->persist($microPost);
         }
 
@@ -76,16 +115,19 @@ class AppFixtures extends Fixture
      */
     private function loadUser(ObjectManager $manager)
     {
-        $user = new User();
-        $user->setUserName('john_doe');
-        $user->setFullName('John Doe');
-        $user->setEmail('john_doe@gmail.com');
-        $user->setPassword($this->passwordEncoder->encodePassword($user, 'john123'));
+        foreach (self::USERS as $userData) {
+            $user = new User();
+            $user->setUserName($userData['userName']);
+            $user->setFullName($userData['fullName']);
+            $user->setEmail($userData['email']);
+            $user->setPassword($this->passwordEncoder->encodePassword($user, $userData['password']));
 
-        // создаем ссылку, созданный пользователь привязывается к ссылке andrii
-        $this->addReference('andrii', $user);
+            // создаем ссылку, созданный пользователь привязывается к ссылке andrii
+            $this->addReference($userData['userName'], $user);
 
-        $manager->persist($user);
+            $manager->persist($user);
+        }
+
         $manager->flush();
     }
 }
