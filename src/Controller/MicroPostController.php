@@ -13,13 +13,16 @@ use App\Entity\MicroPost;
 use App\Form\MicroPostType;
 use App\Repository\MicroPostRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Class MicroPostController
@@ -53,6 +56,10 @@ class MicroPostController
      * @var FlashBagInterface
      */
     private $flashBag;
+    /**
+     * @var AuthorizationCheckerInterface
+     */
+    private $authorizationChecker;
 
     /**
      * MicroPostController constructor.
@@ -62,6 +69,7 @@ class MicroPostController
      * @param EntityManagerInterface $entityManager
      * @param RouterInterface $router
      * @param FlashBagInterface $flashBag
+     * @param AuthorizationCheckerInterface $authorizationChecker
      */
     public function __construct(
         \Twig_Environment $twig, // для работы с шаблонизатором
@@ -69,7 +77,8 @@ class MicroPostController
         FormFactoryInterface $formFactory, // для работы с формами
         EntityManagerInterface $entityManager, // для работы с базой
         RouterInterface $router, // для работы с роутингом
-        FlashBagInterface $flashBag // нужен что б выводить сообщения после редиректов
+        FlashBagInterface $flashBag, // нужен что б выводить сообщения после редиректов
+        AuthorizationCheckerInterface $authorizationChecker // нужен что б давать разрешения на выполнени
     )
     {
         $this->twig = $twig;
@@ -78,6 +87,7 @@ class MicroPostController
         $this->entityManager = $entityManager;
         $this->router = $router;
         $this->flashBag = $flashBag;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -99,7 +109,14 @@ class MicroPostController
 
 
     /**
+     * сюда так же во входные параметры можно было бы передать
+     * AuthorizationCheckerInterface $authorizationChecker и испльзовать переменную а не свойство класса
+     *
      * @Route("/edit/{id}", name="micro_post_edit")
+     *
+     * еще один вариант управления доступом через аннотации
+     * так же можно добавить такую же аннотацию для целого контроллера
+     * @Security("is_granted('edit', microPost)", message="Access denied"))
      *
      * @param MicroPost $microPost
      * @param Request $request
@@ -112,6 +129,13 @@ class MicroPostController
      */
     public function edit(MicroPost $microPost, Request $request)
     {
+        // только если расширать BaseController
+//        $this->denyUnlessGranted('edit', $microPost);
+
+        if (!$this->authorizationChecker->isGranted('edit', $microPost)) {
+            throw new UnauthorizedHttpException();
+        }
+
         $form = $this->formFactory->create( MicroPostType::class, $microPost);
         $form->handleRequest($request);
 
@@ -131,6 +155,8 @@ class MicroPostController
 
     /**
      * @Route("/delete/{id}", name="micro_post_delete")
+     *
+     * @Security("is_granted('delete', microPost)", message="Access denied"))
      *
      * @param MicroPost $microPost
      *

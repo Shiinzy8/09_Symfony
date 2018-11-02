@@ -57,7 +57,7 @@ class MicroPostVoter extends Voter
         $authenticatedUser = $token->getUser();
 
         if (!$authenticatedUser instanceof User) {
-            return true;
+            return false;
         }
 
         // мы убедились что этот типа правильный в методе supports он вызывается первым
