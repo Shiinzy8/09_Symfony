@@ -253,15 +253,16 @@ class MicroPostController
      */
     public function userPosts(User $userWithPosts)
     {
-        $html = $this->twig->render('micro-post/index.html.twig', [
-//            'posts' => $this->microPostRepository->findBy(
-//                ['user' => $userWithPosts,],
-//                ['time' => 'DESC']
-//            ),
+        $html = $this->twig->render('micro-post/user-post.html.twig', [
+            'posts' => $this->microPostRepository->findBy(
+                ['user' => $userWithPosts,],
+                ['time' => 'DESC']
+            ),
+            'user' => $userWithPosts,
 
             // благодаря тому что мы создали связь поста и пользователя и передаем пользователя
             // то мы можем получить результат быстрее
-            'posts' => $userWithPosts->getPosts(),
+//            'posts' => $userWithPosts->getPosts(),
         ]);
 
         return new Response($html);
