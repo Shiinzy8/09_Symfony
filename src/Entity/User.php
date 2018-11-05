@@ -19,6 +19,16 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class User implements UserInterface, \Serializable
 {
+
+    /**
+     * роль пользователя
+     */
+    const ROLE_USER = 'ROLE_USER';
+    /**
+     * роль админа
+     */
+    const ROLE_ADMIN = 'ROLE_ADMIN';
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -77,9 +87,17 @@ class User implements UserInterface, \Serializable
     /**
      * у одного юзера много постов
      * @ORM\OneToMany(targetEntity="App\Entity\MicroPost", mappedBy="user")
+     *
      * @var
      */
     private $posts;
+
+    /**
+     * @ORM\Column(type="simple_array", options={"default":"[ROLE_USER]"})
+     *
+     * @var array
+     */
+    private $roles;
 
     /**
      * Doctrine doesn't do construct method it's only for our use
@@ -88,6 +106,7 @@ class User implements UserInterface, \Serializable
     public function __construct()
     {
         $this->posts = new ArrayCollection();
+        $this->roles = [$this::ROLE_USER];
     }
 
     /**
@@ -116,7 +135,7 @@ class User implements UserInterface, \Serializable
      */
     public function getRoles()
     {
-        return ['ROLE_USER'];
+        return $this->roles;
     }
 
     /**
@@ -266,5 +285,13 @@ class User implements UserInterface, \Serializable
     public function setFullName($fullName): void
     {
         $this->fullName = $fullName;
+    }
+
+    /**
+     * @param array $roles
+     */
+    public function setRoles(array $roles): void
+    {
+        $this->roles = $roles;
     }
 }
