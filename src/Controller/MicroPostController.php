@@ -10,6 +10,7 @@ namespace App\Controller;
 
 
 use App\Entity\MicroPost;
+use App\Entity\User;
 use App\Form\MicroPostType;
 use App\Repository\MicroPostRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -235,6 +236,33 @@ class MicroPostController
                 'form' => $form->createView(),
             ])
         );
+    }
+
+    /**
+     * @Route("/user/{userName}", name="micro_post_user")
+     *
+     * @param User $userWithPosts
+     *
+     * @return Response
+     *
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
+     */
+    public function userPosts(User $userWithPosts)
+    {
+        $html = $this->twig->render('micro-post/index.html.twig', [
+//            'posts' => $this->microPostRepository->findBy(
+//                ['user' => $userWithPosts,],
+//                ['time' => 'DESC']
+//            ),
+
+            // благодаря тому что мы создали связь поста и пользователя и передаем пользователя
+            // то мы можем получить результат быстрее
+            'posts' => $userWithPosts->getPosts(),
+        ]);
+
+        return new Response($html);
     }
 
     /**
