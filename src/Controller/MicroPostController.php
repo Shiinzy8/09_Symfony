@@ -204,7 +204,9 @@ class MicroPostController
         $user = $tokenStorage->getToken()->getUser();
 
         $microPost = new MicroPost();
-        $microPost->setTime(new \DateTime());
+
+        // закомментировали потому что добавили метод public function setTimeOnPersist(): void в MicroPost.php
+//        $microPost->setTime(new \DateTime());
         $microPost->setUser($user);
 
         // что бы создать экземпляр формы на странице нам надо подключить новый сервис в конструкторе

@@ -7,7 +7,9 @@ use Symfony\Component\Validator\Constraints as Assert; // для создани�
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MicroPostRepository")
- * @ORM\Table()
+ *
+ * важная аннотация для того что б использовать callback функции
+ * @ORM\HasLifecycleCallbacks()
  */
 class MicroPost
 {
@@ -95,5 +97,14 @@ class MicroPost
     public function setUser($user): void
     {
         $this->user = $user;
+    }
+
+    /**
+     * Значит будет вызыватся каждый раз мерез методом persist()
+     * @ORM\PrePersist()
+     */
+    public function setTimeOnPersist(): void
+    {
+        $this->time = new \DateTime();
     }
 }
