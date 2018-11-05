@@ -36,7 +36,7 @@ class MicroPost
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="posts")
      *
      * для создания столбца который будет показывать id пользователя ссылаясь на таблицу пользвателей
-     * @ORM\JoinColumn()
+     * @ORM\JoinColumn(nullable=false)
      * @var
      */
     private $user;

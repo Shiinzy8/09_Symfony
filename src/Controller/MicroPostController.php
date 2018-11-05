@@ -22,6 +22,8 @@ use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
@@ -181,7 +183,10 @@ class MicroPostController
     /**
      * @Route("/add", name="micro_post_add")
      *
+     * @Security("is_granted('ROLE_USER')")
+     *
      * @param Request $request
+     * @param TokenStorageInterface $tokenStorage
      *
      * @return Response|RedirectResponse
      *
@@ -189,10 +194,17 @@ class MicroPostController
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax
      */
-    public function add(Request $request)
+    public function add(Request $request, TokenStorageInterface $tokenStorage)
     {
+        // для анонимного юзера нельзя будет создать пост, надо заполнить в таблице user_id
+        // если расширяться от BaseController то будет иметь доступ к такому фукционалу
+        // $user = $this->getUser();
+
+        $user = $tokenStorage->getToken()->getUser();
+
         $microPost = new MicroPost();
         $microPost->setTime(new \DateTime());
+        $microPost->setUser($user);
 
         // что бы создать экземпляр формы на странице нам надо подключить новый сервис в конструкторе
         // сервис $formFactory
