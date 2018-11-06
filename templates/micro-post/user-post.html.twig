@@ -9,6 +9,14 @@
                     <small class="text-muted">
                         @{{ user.userName }}
                     </small>
+
+                    {% if user != app.user %}
+                        {% if user.followers.contains(app.user) == false %}
+                            <a href="{{ path('following_follow', {'id': user.id}) }}" class="btn btn-outline-primary">follow {{ user.fullName }}</a>
+                        {% else %}
+                            <a href="{{ path('following_unfollow', {'id': user.id}) }}" class="btn btn-outline-danger">unfollow {{ user.fullName }}</a>
+                        {% endif %}
+                    {% endif %}
                 </h5>
             </div>
         </div>
