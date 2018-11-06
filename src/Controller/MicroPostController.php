@@ -66,6 +66,7 @@ class MicroPostController
 
     /**
      * MicroPostController constructor.
+     *
      * @param \Twig_Environment $twig
      * @param MicroPostRepository $microPostRepository
      * @param FormFactoryInterface $formFactory
@@ -96,15 +97,26 @@ class MicroPostController
     /**
      * @Route("/", name="micro_post_index")
      *
+     * @param TokenStorageInterface $tokenStorage
+     *
+     * @return Response
+     *
      * @throws \Twig_Error_Loader
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax
      */
-    public function index()
+    public function index(TokenStorageInterface $tokenStorage)
     {
+        $currentUser = $tokenStorage->getToken()->getUser();
+
+        if ($currentUser instanceof User) {
+            $posts = $this->microPostRepository->findAllByUsers($currentUser->getFollowing());
+        } else {
+            $posts = $this->microPostRepository->findBy([], ['time' => 'DESC']);
+        }
         $html = $this->twig->render('micro-post/index.html.twig', [
 //            'posts' => $this->microPostRepository->findAll()
-            'posts' => $this->microPostRepository->findBy([], ['time' => 'DESC']),
+            'posts' => $posts,
         ]);
 
         return new Response($html);
