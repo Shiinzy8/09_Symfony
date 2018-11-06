@@ -10,7 +10,7 @@
                         @{{ user.userName }}
                     </small>
 
-                    {% if user != app.user %}
+                    {% if is_granted('ROLE_USER') and user != app.user %}
                         {% if user.followers.contains(app.user) == false %}
                             <a href="{{ path('following_follow', {'id': user.id}) }}" class="btn btn-outline-primary">follow {{ user.fullName }}</a>
                         {% else %}
