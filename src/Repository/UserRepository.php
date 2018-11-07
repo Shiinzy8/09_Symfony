@@ -14,9 +14,46 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class UserRepository extends ServiceEntityRepository
 {
+    /**
+     * UserRepository constructor.
+     * @param RegistryInterface $registry
+     */
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, User::class);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function findAllWithMoreThanFivePosts()
+    {
+        $query = $this->getAllWithMoreThanFivePostsQuery();
+        return $query->getQuery()->getResult();
+    }
+
+    /**
+     * @param User $user
+     * @return mixed
+     */
+    public function findAllWithMoreThanFivePostsExceptUser(User $user)
+    {
+        $query = $this->getAllWithMoreThanFivePostsQuery();
+        $query->andHaving('user != :user')->setParameter('user', $user);
+
+        return $query->getQuery()->getResult();
+    }
+
+    /**
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    private function getAllWithMoreThanFivePostsQuery() {
+        $sql = $this->createQueryBuilder('user');
+
+        return $sql->select('user')
+            ->innerJoin('user.posts', 'userposts')
+            ->groupBy('user')
+            ->having('count(userposts) > 5');
     }
 
 //    /**
