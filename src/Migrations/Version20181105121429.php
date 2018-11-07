@@ -24,7 +24,7 @@ final class Version20181105121429 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
-        $this->addSql('CREATE SCHEMA public');
+        $this->addSql('CREATE SCHEMA IF NOT EXISTS public');
         $this->addSql('ALTER TABLE micro_post ALTER user_id DROP NOT NULL');
         $this->addSql('ALTER TABLE "user" ALTER roles DROP DEFAULT');
     }

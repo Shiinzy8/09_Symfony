@@ -34,6 +34,8 @@ class User implements UserInterface, \Serializable
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     *
+     * @var int
      */
     private $id;
 
@@ -44,14 +46,14 @@ class User implements UserInterface, \Serializable
      * ограничиваем длину имени пользователя
      * @Assert\Length(min=5, max=50)
      *
-     * @var
+     * @var string
      */
     private $userName;
 
     /**
      * @ORM\Column(type="string")
      *
-     * @var
+     * @var string
      */
     private $password;
 
@@ -89,7 +91,7 @@ class User implements UserInterface, \Serializable
      * у одного юзера много постов
      * @ORM\OneToMany(targetEntity="App\Entity\MicroPost", mappedBy="user")
      *
-     * @var
+     * @var ArrayCollection
      */
     private $posts;
 
@@ -105,6 +107,8 @@ class User implements UserInterface, \Serializable
      * Для коллекций не надо создавать сеттеры
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="following")
+     *
+     * @var ArrayCollection
      */
     private $followers;
 
@@ -121,8 +125,17 @@ class User implements UserInterface, \Serializable
      *         @ORM\JoinColumn(name="following_user_id", referencedColumnName="id")
      *     }
      * )
+     *
+     * @var ArrayCollection
      */
     private $following;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\MicroPost", mappedBy="likeBy")
+     *
+     * @var ArrayCollection
+     */
+    private $postsLiked;
 
     /**
      * Doctrine doesn't do construct method it's only for our use
@@ -133,6 +146,7 @@ class User implements UserInterface, \Serializable
         $this->posts = new ArrayCollection();
         $this->followers = new ArrayCollection();
         $this->following = new ArrayCollection();
+        $this->postsLiked = new ArrayCollection();
     }
 
     /**
@@ -245,6 +259,14 @@ class User implements UserInterface, \Serializable
     public function getFollowing()
     {
         return $this->following;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getPostsLiked(): ArrayCollection
+    {
+        return $this->postsLiked;
     }
 
     /**
