@@ -23,5 +23,3 @@ How to run everything <br />
   <br />  2.4. and switch in this file xdebug.remote_connect_back to 0
   3. cd docker and run command: docker-compose up -d
   4. cd to root folder and run command: php bin/console cache:clear
-
-Now you may enter symfony.local in your browser <br />
