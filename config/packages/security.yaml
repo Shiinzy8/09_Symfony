@@ -1,0 +1,74 @@
+security:
+    access_decision_manager:
+        strategy: affirmative
+    encoders:
+        # use your user class name here
+        App\Entity\User:
+            # bcrypt or argon21 are recommended
+            # argon21 is more secure, but requires PHP 7.2 or the Sodium extension
+            algorithm: bcrypt
+    #        bcrypt встроен в симфони
+    #        Symfony\Component\Security\Core\User\User: plaintext
+    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    providers:
+        #        in_memory:
+        #            memory:
+        #                users:
+        #                    john: { password: helloJohn, roles: ['ROLE_USER'] }
+        database_users:
+            entity:
+                class: App\Entity\User
+                # the property to query by - e.g. username, email, etc
+                property: userName
+                # if you're using multiple entity managers
+                # manager_name: customer
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            anonymous: ~
+            # any url
+            pattern: ^/
+            # activate different ways to authenticate
+
+            #            http_basic: ~
+            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
+
+            form_login:
+                # путь к форме логина
+                check_path: security_login
+                # роут куда перебросит пользователя если он пытается зайти на страницы не залогиненым
+                login_path: security_login
+                # рассмотрим потом
+                csrf_token_generator: security.csrf.token_manager
+                #
+                default_target_path: micro_post_index
+                # если тру то после логина всегда перенаправлять на default_target_path
+                #                always_use_default_target_path: false
+                # перенаправлять юзера на последнюю страницу которую он посещял
+                #                use_referer: true
+                # если юзер провалил аутентификацию то его можно перенаправить на эту страницу
+                #                failure_path:
+                # _username by default
+                #                username_parameter: _username
+                # _password by default
+            #                password_parameter: _password
+            #                csrf_parameter: _custom_name
+            logout:
+                # пусть к странице разлогирования
+                path: security_logout
+                # куда перенаправить после удачного разлогирования
+                target: micro_post_index
+            # form_login: true
+            # https://symfony.com/doc/current/security/form_login_setup.html
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
+    access_control:
+    # - { path: ^/micro_post, roles: ROLE_USER }
+    # - { path: ^/profile, roles: ROLE_USER }
+
+    role_hierarchy:
+        # роль админа теперь будет проходить проверку на роль пользователя
+        ROLE_ADMIN: ROLE_USER
