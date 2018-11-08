@@ -121,7 +121,7 @@ class MicroPost
     }
 
     /**
-     * @return mixed
+     * @return ArrayCollection
      */
     public function getLikeBy()
     {
