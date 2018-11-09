@@ -14,9 +14,31 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class NotificationRepository extends ServiceEntityRepository
 {
+    /**
+     * NotificationRepository constructor.
+     * @param RegistryInterface $registry
+     */
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Notification::class);
+    }
+
+    /**
+     * запрос для подсчета количества нотификаций которые не видел пользовательй
+     * @param $user
+     *
+     * @return int
+     *
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findUnseenByUser($user) :int {
+        $sql = $this->createQueryBuilder('n');
+
+        return $sql->select('count(n)')
+            ->where('n.user = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 
 //    /**
