@@ -45,6 +45,10 @@ services:
         public: true
         alias: App\Service\Greeting
 
+    App\EventListener\LikeNotificationSubscriber:
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+
 
 #    App\Controller\BlockController: ['@App\Service\Greeting']
 
