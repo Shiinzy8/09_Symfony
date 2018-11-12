@@ -10,8 +10,10 @@ namespace App\Controller;
 
 
 use App\Entity\User;
+use App\Event\UserRegisterEvent;
 use App\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -30,7 +32,10 @@ class RegisterController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function register(UserPasswordEncoderInterface $passwordEncoder, Request $request)
+    public function register(
+        UserPasswordEncoderInterface $passwordEncoder,
+        Request $request,
+        EventDispatcherInterface $eventDispatcher)
     {
         // поскольку мы расширяем базовый класс то мы могли бы написать так
         // правда тогда надо было бы пробросить $microPost
@@ -52,6 +57,10 @@ class RegisterController extends Controller
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
+
+            $userRegisteredEvent = new UserRegisterEvent($user);
+
+            $eventDispatcher->dispatch(UserRegisterEvent::NAME, $userRegisteredEvent);
 
             return $this->redirectToRoute('micro_post_index');
         }
