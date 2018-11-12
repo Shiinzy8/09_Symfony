@@ -10,6 +10,7 @@ namespace App\Controller;
 
 
 use App\Repository\NotificationRepository;
+use http\Env\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -52,6 +53,19 @@ class NotificationController extends Controller
     {
         return new JsonResponse([
             'count' => $this->notificationRepository->findUnseenByUser($this->getUser()),
+        ]);
+    }
+
+    // все непрочитанные сообщения пользователя
+    /**
+     * @Route("/all", name="notification_all")
+     */
+    public function notifications() {
+        return $this->render('notification/notifications.html.twig', [
+            'notifications' => $this->notificationRepository->findBy([
+                'seen' => false,
+                'user' => $this->getUser(),
+            ])
         ]);
     }
 }
