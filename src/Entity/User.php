@@ -96,11 +96,11 @@ class User implements UserInterface, \Serializable
     private $posts;
 
     /**
-     * @ORM\Column(type="simple_array", options={"default":"[ROLE_USER]"})
+     * @ORM\Column(type="simple_array", options={"default":"ROLE_USER"})
      *
      * @var array
      */
-    private $roles;
+    private $roles = ["ROLE_USER",];
 
 
     /**

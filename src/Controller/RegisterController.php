@@ -30,6 +30,7 @@ class RegisterController extends Controller
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @param Request $request
      *
+     * @param EventDispatcherInterface $eventDispatcher
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function register(
@@ -58,8 +59,8 @@ class RegisterController extends Controller
             $entityManager->persist($user);
             $entityManager->flush();
 
+            // для обработки событий регистрации пользователей
             $userRegisteredEvent = new UserRegisterEvent($user);
-
             $eventDispatcher->dispatch(UserRegisterEvent::NAME, $userRegisteredEvent);
 
             return $this->redirectToRoute('micro_post_index');

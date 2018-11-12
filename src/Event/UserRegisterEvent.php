@@ -17,6 +17,7 @@ class UserRegisterEvent extends Event
     // это поле будем использовать для того что б симфони знала какой событие обрабатывать
     // оно будет оличать однин обработчик от другого
     const NAME = 'user.register';
+
     /**
      * @var User
      */
@@ -24,7 +25,6 @@ class UserRegisterEvent extends Event
 
     public function __construct(User $registeredUser)
     {
-
         $this->registeredUser = $registeredUser;
     }
 
