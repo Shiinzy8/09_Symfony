@@ -1,3 +1,9 @@
 swiftmailer:
     url: '%env(MAILER_URL)%'
+#    by default
     spool: { type: 'memory' }
+
+#    команда что б отправить письма через консоль php bin/console swiftmailer:spool:send --env=prod --message-limit=10
+#    spool:
+#        type: file
+#        path: '%kernel.project_dir%/var/spool'

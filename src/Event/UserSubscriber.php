@@ -9,31 +9,52 @@
 namespace App\Event;
 
 
+use App\Mailer\Mailer;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
+/**
+ * Class UserSubscriber
+ * @package App\Event
+ */
 class UserSubscriber implements EventSubscriberInterface
 {
     // что б проверить что сервис создалься настроился
     // php bin/console debug:container 'App\Event\UserSubscriber'
 
-    /**
-     * @var \Swift_Mailer
-     */
-    private $mailer;
-    /**
-     * @var \Twig_Environment
-     */
-    private $twig;
+//    /**
+//     * @var \Swift_Mailer
+//     */
+//    private $mailer;
+//    /**
+//     * @var \Twig_Environment
+//     */
+//    private $twig;
+//
+//    /**
+//     * UserSubscriber constructor.
+//     * @param \Swift_Mailer $mailer
+//     * @param \Twig_Environment $twig
+//     */
+//    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $twig)
+//    {
+//        $this->mailer = $mailer;
+//        $this->twig = $twig;
+//    }
 
     /**
-     * UserSubscriber constructor.
-     * @param \Swift_Mailer $mailer
-     * @param \Twig_Environment $twig
+     * @var Mailer
      */
-    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $twig)
+    private $mailer;
+
+// мы переписали контсруктор отдава Мейлеру все полномочия по отправке писем
+    /**
+     * UserSubscriber constructor.
+     * @param Mailer $mailer
+     */
+    public function __construct(Mailer $mailer)
     {
+
         $this->mailer = $mailer;
-        $this->twig = $twig;
     }
 
     /**
@@ -68,15 +89,6 @@ class UserSubscriber implements EventSubscriberInterface
      */
     public function onUserRegister(UserRegisterEvent $event)
     {
-        $body = $this->twig->render('email/registration.html.twig', [
-            'user' => $event->getRegisteredUser(),
-        ]);
-
-        $message = (new \Swift_Message())->setSubject('Welcome to micro-post app')
-            ->setFrom('micropost@micropost.com')
-            ->setTo($event->getRegisteredUser()->getEmail())
-            ->setBody($body, 'text/html');
-
-        $this->mailer->send($message);
+        $this->mailer->sendConfirmationEmail($event->getRegisteredUser());
     }
 }
