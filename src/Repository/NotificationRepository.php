@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Notification;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -25,20 +26,37 @@ class NotificationRepository extends ServiceEntityRepository
 
     /**
      * запрос для подсчета количества нотификаций которые не видел пользовательй
-     * @param $user
+     * @param User $user
      *
      * @return int
      *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function findUnseenByUser($user) :int {
+    public function findUnseenByUser(User $user) :int {
         $sql = $this->createQueryBuilder('n');
 
         return $sql->select('count(n)')
             ->where('n.user = :user')
+            ->andWhere('n.seen = FALSE')
             ->setParameter('user', $user)
             ->getQuery()
             ->getSingleScalarResult();
+    }
+
+    /**
+     * Отмечает все нотификации пользователя как просмотренные
+     * @param User $user
+     */
+    public function markAsReadByUser(User $user)
+    {
+        $sql = $this->createQueryBuilder('n');
+
+        $sql->update('App\Entity\Notification')
+            ->set('n.seen', true)
+            ->where('n.user = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->execute();
     }
 
 //    /**
