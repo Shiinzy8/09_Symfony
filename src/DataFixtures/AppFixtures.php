@@ -62,7 +62,7 @@ class AppFixtures extends Fixture
         [
             'userName' => 'super_admin',
             'email' => 'super_admin@gold.com',
-            'password' => 'seper123',
+            'password' => 'super12345',
             'fullName' => 'Super Admin',
             'roles' => [User::ROLE_ADMIN],
         ],
@@ -132,6 +132,7 @@ class AppFixtures extends Fixture
             $user->setEmail($userData['email']);
             $user->setPassword($this->passwordEncoder->encodePassword($user, $userData['password']));
             $user->setRoles($userData['roles']);
+            $user->setEnabled(true);
 
             // создаем ссылку, созданный пользователь привязывается к ссылке andrii
             $this->addReference($userData['userName'], $user);

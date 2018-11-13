@@ -30,6 +30,7 @@ security:
             anonymous: ~
             # any url
             pattern: ^/
+            user_checker: App\Security\UserChecker
             # activate different ways to authenticate
 
             #            http_basic: ~

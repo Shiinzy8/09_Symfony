@@ -54,7 +54,6 @@ services:
         tags:
             - { name: doctrine.event_subscriber, connection: default }
 
-
 #    App\Controller\BlockController: ['@App\Service\Greeting']
 
 #    App\Service\Greeting: ['@monolog.logger']
