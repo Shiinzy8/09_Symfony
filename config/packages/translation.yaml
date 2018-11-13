@@ -1,6 +1,8 @@
 framework:
-    default_locale: '%locale%'
+#    default_locale: '%locale%'
+    default_locale: 'fr'
     translator:
+#        где хранятся переводы
         default_path: '%kernel.project_dir%/translations'
         fallbacks:
             - '%locale%'
