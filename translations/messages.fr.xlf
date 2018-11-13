@@ -28,8 +28,8 @@
                 <target>J'accepte les conditions d'utilisation</target>
             </trans-unit>
 
-            <trans-unit id="register.username">
-                <source>Username</source>
+            <trans-unit id="register.user_name">
+                <source>User name</source>
                 <target>Nom d'utilisateur</target>
             </trans-unit>
             <trans-unit id="register.password">
@@ -37,7 +37,7 @@
                 <target>Mot de passe</target>
             </trans-unit>
             <trans-unit id="register.repeated_password">
-                <source>Repated password</source>
+                <source>Repeated password</source>
                 <target>Mot de passé</target>
             </trans-unit>
             <trans-unit id="register.full_name">

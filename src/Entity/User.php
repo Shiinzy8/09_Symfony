@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="`user`")
  *
  * можно задать как массив так одно поле и сообщение если уникальность была нарушена
- * @UniqueEntity(fields="email", message="This email is already used")
+ * @UniqueEntity(fields="email", message="This e-mail is already used")
  * @UniqueEntity(fields="userName", message="This username is already used")
  */
 class User implements UserInterface, \Serializable

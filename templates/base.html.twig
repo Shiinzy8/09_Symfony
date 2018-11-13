@@ -17,9 +17,9 @@
         <ul class="navbar-nav px-3">
             {% if is_granted('ROLE_USER') %}
                 <li class="nav-item text-nowrap">
-                    <a class="nav-link"
-                       href="{{ path('micro_post_add') }}"
-                    >Add new</a>
+                    <a class="nav-link" href="{{ path('micro_post_add') }}">
+                        {{ 'Add new'|trans }}
+                    </a>
                 </li>
             {% endif %}
         </ul>
@@ -30,7 +30,7 @@
             {% if is_granted('ROLE_USER') %}
                 <li class="nav-item text-nowrap border-right border-secondary">
                     <a href="{{ path('notification_all') }}" class="nav-link">
-                        Notifications
+                        {{ 'Notifications'|trans }}
                         <span class="badge badge-light" id="notifications-count">
                             <i class="fa fa-circle fa-circle-o-notch fa-spin"></i>
                         </span>
@@ -47,17 +47,17 @@
                        {#href="{{ path('security_logout') }}"#}
                        {#второй способ через генерацию урл для определенного firewall in security.yaml#}
                        href="{{ logout_path() }}"
-                    >Sign out</a>
+                    >{{ 'Sign out'|trans }}</a>
                 </li>
             {% else %}
                 <li class="nav-item text-nowrap">
                     <a class="nav-link" href="{{ path('security_login') }}">
-                        Sign in
+                        {{ 'Sign in'|trans }}
                     </a>
                 </li>
                 <li class="nav-item text-nowrap">
                     <a class="nav-link" href="{{ path('user_register') }}">
-                        Registration
+                        {{ 'Registration'|trans }}
                     </a>
                 </li>
             {% endif %}
