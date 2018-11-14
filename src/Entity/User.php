@@ -147,6 +147,11 @@ class User implements UserInterface, \Serializable
     private $enabled;
 
     /**
+     * @ORM\OneToOne(targetEntity="App\Entity\UserPreferences", cascade={"persist"})
+     */
+    private $preferences;
+
+    /**
      * Doctrine doesn't do construct method it's only for our use
      * User constructor.
      */
@@ -297,6 +302,14 @@ class User implements UserInterface, \Serializable
     }
 
     /**
+     * @return UserPreferences|null
+     */
+    public function getPreferences()
+    {
+        return $this->preferences;
+    }
+
+    /**
      * Removes sensitive data from the user.
      *
      * This is important if, at any given point, sensitive information like
@@ -400,6 +413,14 @@ class User implements UserInterface, \Serializable
     public function setEnabled($enabled): void
     {
         $this->enabled = $enabled;
+    }
+
+    /**
+     * @param mixed $preferences
+     */
+    public function setPreferences($preferences): void
+    {
+        $this->preferences = $preferences;
     }
 
     public function follow(User $user)
