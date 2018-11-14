@@ -9,7 +9,10 @@
 namespace App\Event;
 
 
+use App\Entity\UserPreferences;
 use App\Mailer\Mailer;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -46,15 +49,33 @@ class UserSubscriber implements EventSubscriberInterface
      */
     private $mailer;
 
+    /**
+     * @var EntityManager
+     */
+    private $entityManager;
+
+    /**
+     * @var string
+     */
+    private $defaultLocale;
+
 // мы переписали контсруктор отдава Мейлеру все полномочия по отправке писем
+
     /**
      * UserSubscriber constructor.
+     *
      * @param Mailer $mailer
+     * @param EntityManagerInterface $entityManager
+     * @param string $defaultLocale
      */
-    public function __construct(Mailer $mailer)
+    public function __construct(
+        Mailer $mailer,
+        EntityManagerInterface $entityManager,
+        string $defaultLocale)
     {
-
         $this->mailer = $mailer;
+        $this->entityManager = $entityManager;
+        $this->defaultLocale = $defaultLocale;
     }
 
     /**
@@ -83,12 +104,23 @@ class UserSubscriber implements EventSubscriberInterface
 
     /**
      * @param UserRegisterEvent $event
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      * @throws \Twig_Error_Loader
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax
      */
     public function onUserRegister(UserRegisterEvent $event)
     {
+        $preferences = new UserPreferences();
+        $preferences->setLocal($this->defaultLocale);
+
+        $user = $event->getRegisteredUser();
+        $user->setPreferences($preferences);
+
+        $this->entityManager->flush();
+
         $this->mailer->sendConfirmationEmail($event->getRegisteredUser());
     }
 }

@@ -55,6 +55,7 @@ class LocaleSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         // подписываемся на событие
+        // 20 это приоритет
         return [
             KernelEvents::REQUEST => [
                 'onKernelRequest',
