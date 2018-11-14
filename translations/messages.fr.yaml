@@ -1,6 +1,5 @@
-# translations/messages.fr.yaml
 Sign in: Se connecter
-Sign out': Déconnexion
+Sign out: Déconnexion
 Notifications: Notifications
 Add new: Ajouter une nouvelle
 Recent updates: Mises à jour récentes
@@ -9,7 +8,7 @@ User name: Nom d'utilisateur
 Password: Mot de passe
 Repeated password: Mot de passé
 Full name: Nom et prénom
-Register: Créer un compte
+Registration: Créer un compte
 You have not notifications: Vous n'avez pas de notifications
 registration: |-
     <h3>Bienvenue dans l'application!</h3>
@@ -25,3 +24,5 @@ registration: |-
         <a href="%login-link%">page de connexion</a>
     </p>
     <p>Merci!</p>
+Followers: '{0} No followers|{1} Follower|]1,Inf[ %count% Followers'
+Followings: '{0} No following|{1} Following|]1,Inf[ %count% Followings'
