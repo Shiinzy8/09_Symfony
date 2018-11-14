@@ -54,6 +54,17 @@ services:
         tags:
             - { name: doctrine.event_subscriber, connection: default }
 
+#    после всех настроек перезапустить сайт и увидим что в таблице добавились данные
+    Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler:
+        arguments:
+#            закомментированные аргументы нужны если не использовать Doctrine
+#            - 'pdo_pgsql:dbname=session_db'
+#            - { db_username: user, db_password: my_password, }
+            - !service {class: PDO, factory: 'database_connection:getWrappedConnection'}
+#            нужен потому что доктрина будет создавать транзакцию для записи сессии
+#            из-за чего нельзя будет записывать в базу
+            - { lock_mode: 1}
+
 #    App\Controller\BlockController: ['@App\Service\Greeting']
 
 #    App\Service\Greeting: ['@monolog.logger']
