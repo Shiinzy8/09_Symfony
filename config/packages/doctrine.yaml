@@ -12,6 +12,9 @@ doctrine:
         charset: utf8
 
         url: '%env(resolve:DATABASE_URL)%'
+#        нижней ключ создан потому что мы руками создали таблицу sessions
+#        и что б доктрина не пыталась сопоставить структуру таблиц и ентити которые есть мы исключили нашу таблицу
+        schema_filter: ~^(?!sessions)~
     orm:
         # auto generated if debug is true, otherwise
         # php app/console cache:warmup --env=prod --no-debug

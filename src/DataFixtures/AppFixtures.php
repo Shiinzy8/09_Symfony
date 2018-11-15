@@ -11,6 +11,7 @@ namespace App\DataFixtures;
 
 use App\Entity\MicroPost;
 use App\Entity\User;
+use App\Entity\UserPreferences;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use phpDocumentor\Reflection\Types\Self_;
@@ -41,7 +42,7 @@ class AppFixtures extends Fixture
         [
             'userName' => 'john_doe',
             'email' => 'john_doe@doe.com',
-            'password' => 'john123',
+            'password' => 'john12345',
             'fullName' => 'John Doe',
             'roles' => [User::ROLE_USER],
         ],
@@ -62,7 +63,7 @@ class AppFixtures extends Fixture
         [
             'userName' => 'super_admin',
             'email' => 'super_admin@gold.com',
-            'password' => 'seper123',
+            'password' => 'super12345',
             'fullName' => 'Super Admin',
             'roles' => [User::ROLE_ADMIN],
         ],
@@ -78,6 +79,11 @@ class AppFixtures extends Fixture
         'What are you up to today?',
         'Did you watch the game yesterday?',
         'How was your day?'
+    ];
+
+    private const LANGUAGES = [
+        'en',
+        'fr',
     ];
 
     /**
@@ -132,9 +138,19 @@ class AppFixtures extends Fixture
             $user->setEmail($userData['email']);
             $user->setPassword($this->passwordEncoder->encodePassword($user, $userData['password']));
             $user->setRoles($userData['roles']);
+            $user->setEnabled(true);
 
             // создаем ссылку, созданный пользователь привязывается к ссылке andrii
             $this->addReference($userData['userName'], $user);
+
+            $preferences = new UserPreferences();
+            $preferences->setLocal(self::LANGUAGES[rand(0, count(self::LANGUAGES) - 1)]);
+
+            $user->setPreferences($preferences);
+
+//            по скольку мы создали новую запись в таблице user_persist то необходимо добавить
+//            $manager->persist($preferences);
+//            или в описании User->preferences добавить условие cascade={"persist"}
 
             $manager->persist($user);
         }

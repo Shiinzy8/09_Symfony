@@ -15,12 +15,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="`user`")
  *
  * можно задать как массив так одно поле и сообщение если уникальность была нарушена
- * @UniqueEntity(fields="email", message="This email is already used")
+ * @UniqueEntity(fields="email", message="This e-mail is already used")
  * @UniqueEntity(fields="userName", message="This username is already used")
  */
 class User implements UserInterface, \Serializable
 {
-
     /**
      * роль пользователя
      */
@@ -96,7 +95,7 @@ class User implements UserInterface, \Serializable
     private $posts;
 
     /**
-     * @ORM\Column(type="simple_array", options={"default":"[ROLE_USER]"})
+     * @ORM\Column(type="simple_array", options={"default":"ROLE_USER"})
      *
      * @var array
      */
@@ -138,6 +137,21 @@ class User implements UserInterface, \Serializable
     private $postsLiked;
 
     /**
+     * @ORM\Column(type="string", nullable=true, length=30)
+     */
+    private $confirmationToken;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $enabled;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\UserPreferences", cascade={"persist"})
+     */
+    private $preferences;
+
+    /**
      * Doctrine doesn't do construct method it's only for our use
      * User constructor.
      */
@@ -147,6 +161,8 @@ class User implements UserInterface, \Serializable
         $this->followers = new ArrayCollection();
         $this->following = new ArrayCollection();
         $this->postsLiked = new ArrayCollection();
+        $this->roles = [User::ROLE_USER];
+        $this->enabled = false;
     }
 
     /**
@@ -270,6 +286,30 @@ class User implements UserInterface, \Serializable
     }
 
     /**
+     * @return mixed
+     */
+    public function getConfirmationToken()
+    {
+        return $this->confirmationToken;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEnabled()
+    {
+        return $this->enabled;
+    }
+
+    /**
+     * @return UserPreferences|null
+     */
+    public function getPreferences()
+    {
+        return $this->preferences;
+    }
+
+    /**
      * Removes sensitive data from the user.
      *
      * This is important if, at any given point, sensitive information like
@@ -359,6 +399,30 @@ class User implements UserInterface, \Serializable
         $this->roles = $roles;
     }
 
+    /**
+     * @param mixed $confirmationToken
+     */
+    public function setConfirmationToken($confirmationToken): void
+    {
+        $this->confirmationToken = $confirmationToken;
+    }
+
+    /**
+     * @param mixed $enabled
+     */
+    public function setEnabled($enabled): void
+    {
+        $this->enabled = $enabled;
+    }
+
+    /**
+     * @param mixed $preferences
+     */
+    public function setPreferences($preferences): void
+    {
+        $this->preferences = $preferences;
+    }
+
     public function follow(User $user)
     {
         if ($this->getFollowing()->contains($user)) {
@@ -366,5 +430,14 @@ class User implements UserInterface, \Serializable
         }
 
         $this->getFollowing()->add($user);
+    }
+
+    // что бы добавить проверку на это поле при логировании
+    // создал класс App\Security\UserChecker
+    // и дописал в security.yaml user_checker: App\Security\UserChecker то есть реализовал сервис который
+    // сразу после логирования проверяет на true нужное нам свойство
+    public function isEnabled()
+    {
+        return $this->enabled;
     }
 }

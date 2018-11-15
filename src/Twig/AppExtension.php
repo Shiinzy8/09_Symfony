@@ -9,6 +9,7 @@
 namespace App\Twig;
 
 
+use App\Entity\LikeNotification;
 use Twig\Extension\AbstractExtension;
 use Twig\Extension\GlobalsInterface;
 use Twig\TwigFilter;
@@ -48,4 +49,14 @@ class AppExtension extends AbstractExtension implements GlobalsInterface
             'locale' => $this->locale,
         ];
     }
+
+    // для того что в шаблоне можно было писать {% object is like%}
+    public function getTests()
+    {
+        return [
+            new \Twig_SimpleTest('like', function($object) {return $object instanceof LikeNotification;})
+        ];
+    }
+
+
 }

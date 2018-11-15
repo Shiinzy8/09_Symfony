@@ -1,0 +1,28 @@
+Sign in: Sign in
+Sign out: Sign out
+Notifications: Notifications
+Add new: Add new
+Recent updates: Recent updates
+I agree to the terms of service: I agree to the terms of service
+User name: Username
+Password: Password
+Repeated password: Repeated password
+Full name: Full name
+Registration: Registeration
+You have not notifications: You have no notifications
+registration: |-
+    <h3>Welcome to the app!</h3>
+    <p>
+        Hello %name%! You've registered the app!
+    </p>
+    <p>
+        Please confirm your account by clicking this
+        <a href="%confirm-link%">link</a>
+    </p>
+    <p>
+        To login, go to
+        <a href="%login-link%">login page</a>
+    </p>
+    <p>Thanks!</p>
+Followers: '{0} No followers|{1} Follower|]1,Inf[ %count% Followers'
+Followings: '{0} No following|{1} Following|]1,Inf[ %count% Followings'

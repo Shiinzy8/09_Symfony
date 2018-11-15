@@ -1,0 +1,28 @@
+Sign in: Se connecter
+Sign out: Déconnexion
+Notifications: Notifications
+Add new: Ajouter une nouvelle
+Recent updates: Mises à jour récentes
+I agree to the terms of service: J'accepte les conditions d'utilisation
+User name: Nom d'utilisateur
+Password: Mot de passe
+Repeated password: Mot de passé
+Full name: Nom et prénom
+Registration: Créer un compte
+You have not notifications: Vous n'avez pas de notifications
+registration: |-
+    <h3>Bienvenue dans l'application!</h3>
+    <p>
+        Bonjour %name%! Vous êtes inscrit dans l'application!
+    </p>
+    <p>
+        Veuillez confirmer le compte en cliquant sur ce lien
+        <a href="%confirm-link%">lien</a>
+    </p>
+    <p>
+        Pour vous connecter, accédez à
+        <a href="%login-link%">page de connexion</a>
+    </p>
+    <p>Merci!</p>
+Followers: '{0} No followers|{1} Follower|]1,Inf[ %count% Followers'
+Followings: '{0} No following|{1} Following|]1,Inf[ %count% Followings'
