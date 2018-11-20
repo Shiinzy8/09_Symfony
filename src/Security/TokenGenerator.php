@@ -14,7 +14,10 @@ class TokenGenerator
     private const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
     /**
-     * @param int $length
+     * Генерирует токен безопасности для регистрации пользователя
+     * токен = набор символов из английского алфавита и цифр заданной длины
+     *
+     * @param int $length - длина токена
      *
      * @return string
      *
