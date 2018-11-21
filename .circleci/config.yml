@@ -11,12 +11,13 @@ jobs:
           MAILER_FROM: micropost@micropost.com
       - image: circleci/postgres:10.6
         environment:
-          DATABASE_URL: pgsql://db_user:db_pass@127.0.0.1:5432/db_name
+          POSTGRES_USER: db_user
+          POSTGRES_DB: db_pass
     steps:
       - checkout
       - run:
           name: Install PHP Mysql
-          command: sudo docker-php-ext-install pdo-pgsql
+          command: sudo docker-php-ext-install pdo_pgsql
       - run:
           name: Wait for PostgreSQL
           command: dockerize -wait tcp://127.0.0.1:5432 -timeout 120s
