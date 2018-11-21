@@ -12,7 +12,8 @@ jobs:
       - image: circleci/postgres:10.6
         environment:
           POSTGRES_USER: db_user
-          POSTGRES_DB: db_pass
+          POSTGRES_PASSWORD: db_pass
+          POSTGRES_DB: db_name
     steps:
       - checkout
       - run:
