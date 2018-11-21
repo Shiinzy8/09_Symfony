@@ -3,7 +3,7 @@ jobs:
   build:
     working_directory: ~/symfony
     docker:
-      - image: circleci/php:7.0-apache-stretch-node-browsers-legacy
+      - image: circleci/php:7.2.12-apache-stretch-browsers-legacy
         environment:
           APP_ENV: test
           DATABASE_URL: pgsql://db_user:db_pass@127.0.0.1:5432/db_name
