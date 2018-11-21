@@ -48,6 +48,11 @@ jobs:
         environment:
           APP_ENV: test
           DATABASE_URL: pgsql://db_user:db_pass@127.0.0.1:5432/db_name
+      - image: circleci/postgres:10.6
+        environment:
+          POSTGRES_USER: db_user
+          POSTGRES_PASSWORD: db_pass
+          POSTGRES_DB: db_name
     steps:
       - checkout
       - run:
@@ -59,9 +64,6 @@ jobs:
       - run:
           name: Install PHP PostgreSQL
           command: sudo docker-php-ext-install pdo_pgsql
-      - run:
-          name: Wait for PostgreSQL
-          command: dockerize -wait tcp://127.0.0.1:5432 -timeout 120s
       - run:
           name: Composer
           command: sudo composer self-update
