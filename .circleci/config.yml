@@ -51,6 +51,21 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Install apt
+          command: sudo apt-get install -y zlib1g-dev
+      - run:
+          name: Install Libpq
+          command: sudo apt-get install libpq-dev
+      - run:
+          name: Install PHP PostgreSQL
+          command: sudo docker-php-ext-install pdo_pgsql
+      - run:
+          name: Wait for PostgreSQL
+          command: dockerize -wait tcp://127.0.0.1:5432 -timeout 120s
+      - run:
+          name: Composer
+          command: sudo composer self-update
+      - run:
           name: Composer install
           command: composer install -n --prefer-dist
       - run:
