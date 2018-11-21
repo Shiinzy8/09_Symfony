@@ -16,7 +16,10 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install PHP Mysql
+          name: Install Libpq
+          command: sudo apt-get install libpq-dev
+      - run:
+          name: Install PHP PostgreSQL
           command: sudo docker-php-ext-install pdo_pgsql
       - run:
           name: Wait for PostgreSQL
