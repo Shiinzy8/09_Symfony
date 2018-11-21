@@ -16,7 +16,7 @@ jobs:
       - checkout
       - run:
           name: Install PHP Mysql
-          command: sudo docker-php-ext-install pdo_
+          command: sudo docker-php-ext-install pdo-pgsql
       - run:
           name: Wait for PostgreSQL
           command: dockerize -wait tcp://127.0.0.1:5432 -timeout 120s
