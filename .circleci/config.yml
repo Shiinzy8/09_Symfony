@@ -1,0 +1,31 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/symfony
+    docker:
+      - image: circleci/php:7.0-apache-stretch-node-browsers-legacy
+        environment:
+          APP_ENV: test
+          DATABASE_URL: pgsql://db_user:db_pass@127.0.0.1:5432/db_name
+          MAILER_URL: smtp://8bff5e6c28c8ce:fe6170d5f72ffe@smtp.mailtrap.io:25
+          MAILER_FROM: micropost@micropost.com
+      - image: circleci/postgres:10.6
+        environment:
+          DATABASE_URL: pgsql://db_user:db_pass@127.0.0.1:5432/db_name
+    steps:
+      - checkout
+      - run:
+          name: Install PHP Mysql
+          command: sudo docker-php-ext-install pdo_
+      - run:
+          name: Wait for PostgreSQL
+          command: dockerize -wait tcp://127.0.0.1:5432 -timeout 120s
+      - run:
+          name: Composer
+          command: sudo composer self-update
+      - run:
+          name: Composer install
+          command: composer install -n --prefer-dist
+      - run:
+          name: Run migrations
+          command: php bin/console doctrine:migrations:migrate -env=test --no-interaction
