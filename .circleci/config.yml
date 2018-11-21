@@ -45,6 +45,9 @@ jobs:
     working_directory: ~/symfony
     docker:
       - image: circleci/php:7.2-apache-stretch-node-browsers-legacy
+        environment:
+          APP_ENV: test
+          DATABASE_URL: pgsql://db_user:db_pass@127.0.0.1:5432/db_name
     steps:
       - checkout
       - run:
