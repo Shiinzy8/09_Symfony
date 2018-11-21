@@ -17,7 +17,7 @@ jobs:
       - checkout
       - run:
           name: Install apt
-          command: sudo apt-get install -y zliblg-dev
+          command: sudo apt-get install -y zlib1g-dev
       - run:
           name: Install Libpq
           command: sudo apt-get install libpq-dev
