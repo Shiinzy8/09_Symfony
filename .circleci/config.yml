@@ -55,6 +55,8 @@ jobs:
           POSTGRES_DB: db_name
     steps:
       - checkout
+      - add_ssh_keys:
+            fingerprints:
       - run:
           name: Install apt
           command: sudo apt-get install -y zlib1g-dev
@@ -74,8 +76,8 @@ jobs:
           name: Clear cache
           command: php bin/console cache:clear --env=prod --no-interaction
       - run:
-         name: Clear warmup
-         command: php bin/console cache:warmup --env=prod --no-interaction
+          name: Clear warmup
+          command: php bin/console cache:warmup --env=prod --no-interaction
       - run:
           name: Npm bootstrap
           command: npm i bootstrap
