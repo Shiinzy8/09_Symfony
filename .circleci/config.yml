@@ -87,10 +87,7 @@ jobs:
           command: npm i jquery
       - run:
           name: Npm
-          command: npm install && npm run build
-      - run:
-          name: Npm fix
-          command: npm audit fix
+          command: npm install && npm audit fix && npm run build
       - run:
           name: Add droplet
           command: ssh-keyscan -H $DROPLET_IP >> ~/.ssh/known_hosts
