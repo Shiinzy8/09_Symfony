@@ -1,4 +1,6 @@
 # Remove symlink
+sudo mkdir -p /var/www/symfony_old && \
+
 sudo rm -R /var/www/symfony_old && \
 sudo cp -R /var/www/symfony_current /var/www/symfony_old/ && \
 sudo rm /var/www/symfony && \

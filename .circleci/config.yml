@@ -74,6 +74,9 @@ jobs:
           name: Clear cache
           command: php bin/console cache:clear --env=prod --no-interaction
       - run:
+         name: Clear warmup
+         command: php bin/console cache:warmup --env=prod --no-interaction
+      - run:
           name: Npm bootstrap
           command: npm i bootstrap
       - run:
@@ -92,7 +95,7 @@ jobs:
           name: Add droplet
           command: ssh-keyscan -H $DROPLET_IP >> ~/.ssh/known_hosts
       - run:
-          name: Pre deploy
+          name: Pre-deploy
           command: ssh -T $DROPLET_USER@$DROPLET_IP < bin/deploy/pre_deploy.sh
       - run:
           name: Deploy code
