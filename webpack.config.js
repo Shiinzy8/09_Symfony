@@ -1,3 +1,12 @@
+//
+//  Webpack configuration.
+//
+//  @requires composer-package:symfony/flex
+//  @requires composer-recipe:encore
+//
+//  @requires module:babel-preset-env
+//  @requires module:babel-preset-es2015
+//
 var Encore = require('@symfony/webpack-encore');
 
 Encore
@@ -47,7 +56,7 @@ Encore
     .enableBuildNotifications()
     .enableSourceMaps(!Encore.isProduction())
     // enables hashed filenames (e.g. app.abc123.css)
-    // .enableVersioning(Encore.isProduction())
+    .enableVersioning(Encore.isProduction())
 
     // enables Sass/SCSS support
     //.enableSassLoader()
@@ -57,6 +66,47 @@ Encore
 
     // uncomment if you're having problems with a jQuery plugin
     //.autoProvidejQuery()
+
+    .configureBabel((config) => {
+        config.plugins.push(
+            // Enable using dynamic imports, using modular per-import chunks
+            ['syntax-dynamic-import'],
+        );
+    })
+
+    // Presets
+    .configureBabel((config) => {
+        config.presets.push(
+            // Enable transpiling down to browser compatibility
+            ['env', { targets: { browsers: ['last 2 versions', 'safari >= 7'] } }],
+            // // Enable transpiling ES2015 to ES5 for uglifying non-ignored modules
+            // ['es2015'],
+        );
+    })
+
+    // .configureBabel(function(babelConfig) {
+    //     // add additional presets
+    //     // babelConfig.presets.push('@babel/preset-flow');
+    //
+    //     babelConfig.presets.push('@babel/preset-env');
+    //
+    //     // no plugins are added by default, but you can add some
+    //     // babelConfig.plugins.push('styled-jsx/babel');
+    // }, {
+    //     // node_modules is not processed through Babel by default
+    //     // but you can whitelist specific modules to process
+    //     // include_node_modules: ['foundation-sites']
+    //
+    //     // or completely control the exclude
+    //     // exclude: /bower_components/
+    // })
 ;
 
-module.exports = Encore.getWebpackConfig();
+// export the final configuration
+let config = Encore.getWebpackConfig();
+// config.resolve.alias = {
+//     'local': path.resolve(__dirname, './resources/src')
+// };
+module.exports = config;
+
+// module.exports = Encore.getWebpackConfig();
