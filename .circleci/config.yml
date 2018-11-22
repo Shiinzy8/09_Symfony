@@ -99,7 +99,7 @@ jobs:
           command: ssh -T $DROPLET_USER@$DROPLET_IP < bin/deploy/pre_deploy.sh
       - run:
           name: Deploy code
-          command: rsync -vzcrSLhp --exclude '.env' --delete -v --stats --progress ~/symfony/ $DROPPLET_USER@$DROPLET_IP:/var/www/symfony_current
+          command: rsync -vzcrSLhp --exclude '.env' --delete ~/symfony/ $DROPPLET_USER@$DROPLET_IP:/var/www/symfony_current
       - run:
           name: Post deploy
           command: ssh -T $DROPLET_USER@$DROPLET_IP < bin/deploy/deploy.sh
